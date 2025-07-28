@@ -302,7 +302,8 @@
      transform: scale(1.03);
         box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
-  @media screen and (max-width: 768px) {
+   @media screen and (max-width: 768px) {
+    
       nav ul {
         flex-direction: column;
         align-items: center;
@@ -313,8 +314,9 @@
       }
 
       .hero img {
-        width: 90%;
+        width: 100%;
         height: auto;
+        margin-bottom: 10px;
       }
 
       .section {
@@ -328,7 +330,7 @@
       .left-img,
       .right-img
       .hero-right-img,
-      .hero-left-img, {
+      .hero-left-img {
         display: none; /* skrij slike ob straneh na telefonih */
       }
 
@@ -348,7 +350,13 @@
         font-size: 1.2em;
         padding: 10px 20px;
       }
-  }
+    
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+   }
 
   </style>
 </head>
