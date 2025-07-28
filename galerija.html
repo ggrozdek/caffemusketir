@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galerija – Caffe Mušketir</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4e9d8;
+    }
+
+    /* NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: white;
+      border-bottom: 1px solid #ddd;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+    }
+    nav img {
+      height: 80px;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #c21807;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    header {
+      padding-top: 120px;
+      text-align: center;
+      background-color: #f7f1e3;
+      padding-bottom: 60px;
+    }
+
+    header h1 {
+      color: #c21807;
+      font-size: 36px;
+    }
+
+    .gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px 20px;
+    }
+
+    .gallery-grid img {
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #c21807;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #a60f05;
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <img src="images/IMG_1068-Photoroom.png" alt="Caffe Mušketir" />
+    <div>
+      <a href="musketir 2.html#pocetna">Početna</a>
+      <a href="musketir 2.html#onama">O nas</a>
+      <a href="musketir 2.html#cenik">CENIK</a>
+      <a href="musketir 2.html#galerija">Galerija</a>
+      <a href="musketir 2.html#rezervacije">Rezervacije</a>
+      <a href="musketir 2.html#kontakt">Kontakt</a>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <h1>Galerija vseh dogodkov</h1>
+    <a href="musketir 2.html" class="back-button">← Nazaj na začetno stran</a>
+  </header>
+
+  <!-- FULL GALLERY -->
+  <section class="gallery-grid">
+    <img src="images/IMG_9653.JPEG" alt="Dogodek 1">
+    <img src="images/IMG_9661.JPEG" alt="Dogodek 2">
+    <img src="images/IMG_9650.JPEG" alt="Dogodek 3">
+    <img src="images/IMG_9658.JPEG" alt="Dogodek 4">
+    <img src="images/IMG_9648.JPEG" alt="Dogodek 5">
+    <img src="images/IMG_9660.JPEG" alt="Dogodek 6">
+    <!-- Dodaj več slik po želji -->
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Caffe Mušketir – Vse pravice pridržane</p>
+  </footer>
+
+</body>
+</html>
