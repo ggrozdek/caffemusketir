@@ -2,12 +2,14 @@
 <html lang="sl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Caffe Mušketir</title>
   <style>
     html {
       scroll-behavior: smooth;
     }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -275,6 +277,51 @@
     .cenik-image-button:hover {
      transform: scale(1.03);
         box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    @media screen and (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav ul li {
+        margin: 10px 0;
+      }
+
+      .hero img {
+        width: 90%;
+        height: auto;
+      }
+
+      .section {
+        padding: 20px 10px;
+      }
+
+      .two-columns {
+        flex-direction: column;
+      }
+
+      .left-img,
+      .right-img {
+        display: none; /* skrij slike ob straneh na telefonih */
+      }
+
+      .gallery img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+
+      .cenik-button {
+        font-size: 1.2em;
+        padding: 10px 20px;
+      }
     }
 
   </style>
