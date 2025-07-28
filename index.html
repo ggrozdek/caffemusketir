@@ -229,11 +229,18 @@
     .gallery {
       background: #f1e8dd url(images/Background\ \(2\).png) repeat;
       text-allign: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+
     }
     .gallery img {
       display: inline-block;
-      vertical-align: top;
-      margin: 10px;
+      vertical-align: bottom;
+      margin: 0;
       max-width: 200px;
       width: auto;
       height: auto;
@@ -243,6 +250,7 @@
     }
     .gallery .more-gallery-button {
       display: inline-block;
+      width: auto;
       margin-top: 30px;
       padding: 10px 20px;
       background-color: #c21807;
