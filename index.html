@@ -176,7 +176,8 @@
     }
 
     .aktualni-dogodki img {
-        width: 350px;
+        max-width: 350px;
+        width: 100%;
         height: auto;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -189,7 +190,8 @@
     }
     .side-img {
       position: absolute;
-      width: 280px;
+      max-width: 280px;
+      width: 100%;
       opacity: 1.0;
       display: flex;
       flex-wrap: wrap;
@@ -221,7 +223,8 @@
       background: #f1e8dd url(images/Background\ \(2\).png) repeat;
     }
     .gallery img {
-      width: 200px;
+      max-width: 200px;
+      width:100%;
       height: auto;
       margin: 10px;
       border-radius: 8px;
@@ -258,6 +261,21 @@
       margin-top: 0;
       color: #fff7f0;
     }
+    .instagram-button {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #d93636; /* rdeče-bež barve */
+      color: white;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .instagram-button:hover {
+      background-color: #b72e2e;
+    }
+
 
     .cenik-link-section {
      background: #f4e9d8 url(images/Background\ \(2\).png) repeat;
@@ -302,7 +320,9 @@
       }
 
       .left-img,
-      .right-img {
+      .right-img
+      .hero-right-img,
+      .hero-left-img, {
         display: none; /* skrij slike ob straneh na telefonih */
       }
 
@@ -332,7 +352,7 @@
   <nav>
     <img src="images/IMG_1068-Photoroom.png" alt="Caffe Mušketir" />
     <div class="nav-links">
-      <a href="#pocetna">Začetna</a>
+      <a href="#pocetna">Domov</a>
       <a href="#dogodki">Dogodki</a>
       <a href="#onama">O nas</a>
       <a href="#cenik">Cenik</a> 
@@ -410,6 +430,9 @@
     <div class="footer-column" style="text-align: center;">
       <h3>Rezervacije</h3>
       <p>Za rezervacije nas pokličite na: <strong>070 700 691</strong></p>
+      <a href="https://www.instagram.com/caffemusketir" target="_blank" class="instagram-button">
+        Instagram: @caffemusketir
+      </a>
     </div>
 
     <div class="footer-column" style="text-align: right;">
