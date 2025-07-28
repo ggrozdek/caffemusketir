@@ -230,8 +230,7 @@
       background: #f1e8dd url(images/Background\ \(2\).png) repeat;
     }
     .gallery img {
-      max-width: 200px;
-      width:100%;
+      width:200px;
       height: auto;
       margin: 10px;
       border-radius: 8px;
@@ -313,12 +312,22 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
+      allign-items: center;
     }
 
     .cenik-image-button:hover {
      transform: scale(1.03);
         box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    
     @media screen and (max-width: 768px) {
     
       nav ul {
@@ -336,7 +345,7 @@
         margin-bottom: 10px;
       }
 
-      .section {
+      section {
         padding: 20px 10px;
       }
 
@@ -344,12 +353,10 @@
         flex-direction: column;
       }
 
-      .side-img left-img,
-      .side-img right-img,
-      .hero-side-img hero-right-img,
-      .hero-side-img hero-left-img,
-      .side-img,
-      .hero-side-img, {
+      .side-img.left-img,
+      .side-img.right-img,
+      .hero-side-img.hero-right-img,
+      .hero-side-img.hero-left-img {
         display: none !important; /* skrij slike ob straneh na telefonih */
       }
 
@@ -369,11 +376,16 @@
         font-size: 1.2em;
         padding: 10px 20px;
       }
-    
-      img {
-        max-width: 100%;
-        height: auto;
+
+      .cenik-image-button {
         display: block;
+        margin: 0 auto;
+      }
+
+    
+      .aktualni-dogodki {
+        flex-direction: column;
+        allign-items: center;
       }
     }
 
