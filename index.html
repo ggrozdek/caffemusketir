@@ -256,6 +256,53 @@
       cursor: pointer;
     }
 
+    .gallery {
+      background: #f1e8dd url(images/Background\ \(2\).png) repeat;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .gallery h2 {
+      width: 100%;
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #c21807;
+    }
+
+    .gallery-images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .gallery-images img {
+      max-width: 200px;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .more-gallery-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #c21807;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .more-gallery-button:hover {
+      background-color: #a60f05;
+    }
+
+
     /* FOOTER */
     footer {
       background: #a60f05;
@@ -453,13 +500,15 @@
 
   <!-- GALLERY SECTION -->
   <section class="gallery" id="galerija">
-    <h2>Galerija dogodkov</h2>
-    <img src="images/IMG_9653.JPEG" alt="Dogodek 1" />
-    <img src="images/IMG_9661.JPEG" alt="Dogodek 2" />
-    <img src="images/IMG_9650.JPEG" alt="Dogodek 3" />
-    <br />
+    <h2>Galerija</h2>
+    <div class="gallery-images">
+      <img src="images/IMG_9653.JPEG" alt="Dogodek 1" />
+      <img src="images/IMG_9661.JPEG" alt="Dogodek 2" />
+      <img src="images/IMG_9650.JPEG" alt="Dogodek 3" />
+    </div>
     <a href="galerija.html" class="more-gallery-button">Poglej vse slike</a>
   </section>
+
 
 
 
