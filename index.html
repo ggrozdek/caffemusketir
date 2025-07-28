@@ -257,6 +257,17 @@
       object-fit: cover;
     }
 
+
+    .more-gallery-button:hover {
+      background-color: #a60f05;
+    }
+
+    .gallery-button-container {
+      width: 100%;
+      text-align: center;
+      margin-top: 10px;
+    }
+
     .more-gallery-button {
       display: inline-block;
       padding: 10px 20px;
@@ -268,12 +279,9 @@
       font-size: 16px;
       cursor: pointer;
       transition: background 0.3s ease;
-      width: auto;
+      width: auto; /* to prepreči raztezanje */
     }
 
-    .more-gallery-button:hover {
-      background-color: #a60f05;
-    }
 
 
     /* FOOTER */
@@ -473,13 +481,17 @@
 
   <!-- GALLERY SECTION -->
   <section class="gallery" id="galerija">
-    <h2>Galerija</h2>
+    <h2>Galerija dogodkov</h2>
+  
     <div class="gallery-images">
       <img src="images/IMG_9653.JPEG" alt="Dogodek 1" />
       <img src="images/IMG_9661.JPEG" alt="Dogodek 2" />
       <img src="images/IMG_9650.JPEG" alt="Dogodek 3" />
     </div>
-    <a href="galerija.html" class="more-gallery-button">Poglej vse slike</a>
+  
+    <div class="gallery-button-container">
+      <a href="galerija.html" class="more-gallery-button">Poglej vse slike</a>
+    </div>
   </section>
 
 
