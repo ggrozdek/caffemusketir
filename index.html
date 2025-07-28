@@ -277,6 +277,21 @@
       font-weight: bold;
       transition: background-color 0.3s ease;
     }
+    
+    .facebook-button {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #d93636; /* rdeče-bež barve */
+      color: white;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .facebook-button:hover {
+      background-color: #b72e2e;
+    }
 
     .instagram-button:hover {
       background-color: #b72e2e;
@@ -367,7 +382,7 @@
     <img src="images/IMG_1068-Photoroom.png" alt="Caffe Mušketir" />
     <div class="nav-links">
       <a href="#pocetna">Domov</a>
-      <a href="#dogodki">Dogodki</a>
+      <a href="#dogodki">Aktualno</a>
       <a href="#onama">O nas</a>
       <a href="#cenik">Cenik</a> 
       <a href="#galerija">Galerija</a>
@@ -387,15 +402,15 @@
     
 
     <section class="dogodki" id="dogodki">
-     <h2>Dogodki</h2>
+     <h2>Aktualno</h2>
 
      <div class="dogodki-buttons">
-        <a href="galerija.html" class="pretekli-gumb">Pretekli dogodki</a>
+        <a href="dogodki.html" class="pretekli-gumb">Pretekli dogodki</a>
      </div>
 
       <div id="aktualniDogodki" class="aktualni-dogodki">
       <img src="images/IMG_9657.JPEG" " alt="Dogodek 1" />
-     <img src="images/IMG_9654.JPEG" alt="Dogodek 2" />
+      <img src="images/IMG_9654.JPEG" alt="Dogodek 2" />
      </div>
     </section>
 
@@ -406,7 +421,7 @@
     <img class="side-img left-img" src="images/IMG_9655.JPEG" alt="Leva slika" />
     <img class="side-img right-img" src="images/IMG_9656.JPEG" alt="Desna slika" />
     <h2>O nas</h2>
-    <p><strong>Naša zgodba:</strong> Caffe Mušketir je kraj tradicije, okusa in skupnosti. Postrežemo z najboljšimi kavami v prijetnem ambientu.</p>
+    <p><strong>Naša zgodba:</strong> Caffe Mušketir je kraj tradicije, okusa in družinske skupnosti. Postrežemo z najboljšimi kavami v prijetnem ambientu.</p>
     <p><strong>Naša vizija:</strong> Želimo ustvariti prostor, kjer se vsakdo počuti kot doma ob skodelici vrhunske kave.</p>
   </section>
 
@@ -446,6 +461,9 @@
       <p>Za rezervacije nas pokličite na: <strong>070 700 691</strong></p>
       <a href="https://www.instagram.com/caffemusketir" target="_blank" class="instagram-button">
         Instagram: @caffemusketir
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61573121475328&locale=sl_SI" target="_blank" class="facebook-button"> 
+        Facebook: Caffe Mušketir
       </a>
     </div>
 
