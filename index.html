@@ -229,7 +229,38 @@
       border-radius: 10px;
     }
 
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 24px;
+      display: none;
+      z-index: 10;
+      transition: background-color 0.3s;
+    }
 
+    .carousel-button:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-button.left {
+      left: 10px;
+    }
+
+    .carousel-button.right {
+      right: 10px;
+    }
+
+/* Prikaži gumbe ob hoverju */
+    .carousel-container:hover .carousel-button {
+      display: block;
+    }
 
     /* ABOUT SECTION */
     .about {
@@ -531,6 +562,9 @@
           <img src="images/IMG_9676.JPEG" alt="Prostor 5">
       <!-- Dodaj več slik po potrebi -->
         </div>
+
+        <button class="carousel-button left">&#10094;</button>
+        <button class="carousel-button right">&#10095;</button>
       </div>
   </section>
 
@@ -607,15 +641,42 @@
   <script>
       const track = document.querySelector('.carousel-track');
       const slides = document.querySelectorAll('.carousel-track img');
-      let index = 0;
+      const prevButton = document.querySelector('.carousel-button.left');
+      const nextButton = document.querySelector('.carousel-button.right');
 
-      function moveToNextSlide() {
-        currentindex = (currentindex + 1) % slides.length;
-        track.style.transform = `translateX(-${currentindex * 100}%)`;
+      let currentIndex = 0;
+      const slideCount = slides.length;
+
+      function updateSlide() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
       }
 
-      setInterval(moveToNextSlide, 4); // menja sliko vsakih 4 sekunde
+      function moveToNextSlide() {
+        currentIndex = (currentIndex + 1) % slideCount;
+        updateSlide();
+      }
+
+      function moveToPrevSlide() {
+        currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+        updateSlide();
+      }
+
+      nextButton.addEventListener('click', moveToNextSlide);
+      prevButton.addEventListener('click', moveToPrevSlide);
+
+  // Auto-slide every 4 seconds
+      let autoSlide = setInterval(moveToNextSlide, 4000);
+
+  // Pause auto-slide when hovering over buttons
+      document.querySelector('.carousel-container').addEventListener('mouseenter', () => {
+        clearInterval(autoSlide);
+      });
+
+      document.querySelector('.carousel-container').addEventListener('mouseleave', () => {
+        autoSlide = setInterval(moveToNextSlide, 4000);
+      });
   </script>
+
 
 </body>
 </html>
