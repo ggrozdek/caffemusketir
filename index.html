@@ -191,6 +191,44 @@
      background-color: #a60f05;
     }
 
+    /* prostor */
+    .prostor {
+      background: #f1e8dd url(images/Background\ \(2\).png) repeat;
+      padding: 100px 20px;
+      text-align: center;
+    }
+
+    .prostor h2 {
+      font-size: 28px;
+      color: #c21807;
+      margin-bottom: 30px;
+    }
+
+    .carousel-container {
+      overflow: hidden;
+      width: 90%;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: max-content;
+    }
+
+    .carousel-track img {
+      width: 100%;
+      max-width: 800px;
+      flex-shrink: 0;
+      height: auto;
+      border-radius: 10px;
+    }
+
+
 
     /* ABOUT SECTION */
     .about {
@@ -481,6 +519,22 @@
     </section>
 
 
+  <section class="prostor" id="prostor">
+      <h2>Prostor</h2>
+      <div class="carousel-container">
+        <div class="carousel-track">
+          <img src="images/IMG_9656.JPEG" alt="Prostor 1">
+          <img src="images/IMG_9672.JPEG" alt="Prostor 2">
+          <img src="images/IMG_9674.JPEG" alt="Prostor 3">
+          <img src="images/IMG_9675.JPEG" alt="Prostor 4">
+          <img src="images/IMG_9676.JPEG" alt="Prostor 5">
+      <!-- Dodaj več slik po potrebi -->
+        </div>
+      </div>
+  </section>
+
+
+
 
   <!-- ABOUT SECTION -->
   <section class="about" id="onama">
@@ -548,6 +602,19 @@
 
     </div>
   </footer>
+
+  <script>
+      const track = document.querySelector('.carousel-track');
+      const slides = document.querySelectorAll('.carousel-track img');
+      let index = 0;
+
+      function moveToNextSlide() {
+        index = (index + 1) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+      }
+
+      setInterval(moveToNextSlide, 4000); // menja sliko vsakih 4 sekunde
+  </script>
 
 </body>
 </html>
