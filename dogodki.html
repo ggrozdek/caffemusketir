@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pretekli dogodki – Caffe Mušketir</title>
+  <link rel="stylesheet" href="styles.css"> <!-- če imaš zunanji css -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4e9d8 url(images/Background\ \(2\).png) repeat;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: white;
+      border-bottom: 1px solid #ddd;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    nav img {
+      height: 60px;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #c21807;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 6px;
+    }
+
+    .content {
+      padding: 100px 20px 60px;
+      text-align: center;
+    }
+
+    .event-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .event-card {
+      max-width: 400px;
+      text-align: center;
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .event-card:hover {
+      transform: scale(1.03);
+    }
+
+    .event-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .event-card-title {
+      padding: 10px;
+      font-weight: bold;
+      color: #c21807;
+    }
+
+    .back-to-main-button {
+     display: inline-block;
+      margin-top: 30px;
+     padding: 10px 20px;
+     background-color: #c21807;
+     color: white;
+     text-decoration: none;
+     border-radius: 6px;
+     font-size: 16px;
+     transition: background-color 0.3s ease;
+       cursor: pointer;
+    }
+
+    .back-to-main-button:hover {
+         background-color: #a60f05;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="index.html"><img src="images/IMG_1068-Photoroom.png" alt="Caffe Mušketir"></a>
+    <div class="nav-links">
+      <a href="index.html#pocetna">Domov</a>
+      <a href="index.html#dogodki">Aktualno</a>
+      <a href="index.html#onama">O nas</a>
+      <a href="index.html#cenik">Cenik</a> 
+      <a href="index.html#galerija">Galerija</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <section class="content">
+    <h2>Pretekli dogodki</h2>
+    <div class="event-grid">
+      <a href="dogodek2.html" class="event-card">
+        <img src="images/kafansko.png" alt="Dogodek 2">
+        <div class="event-card-title">Kafansko veće</div>
+      </a>
+
+      <a href="dogodek1.html" class="event-card">
+        <img src="images/Otvoritev.png" alt="Dogodek 1">
+        <div class="event-card-title">Otvoritev</div>
+      </a>
+
+      <a href="dogodek0.html" class="event-card">
+        <img src="images/PRENOVA.png" alt="Dogodek 0">
+        <div class="event-card-title">Prenova</div>
+      </a>
+
+
+      <!-- Dodaj še več dogodkov -->
+    </div>
+
+    <div class="back-to-main">
+      <a href="index.html" class="back-to-main-button">Nazaj na Aktualno</a>
+    </div>
+    
+  </section>
+
+</body>
+</html>
