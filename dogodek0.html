@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prenova</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4e9d8 url(images/Background\ \(2\).png) repeat;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: white;
+      border-bottom: 1px solid #ddd;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      
+    }
+
+    nav img {
+      height: 60px;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 15px;
+      margin-right: 50px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #c21807;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 6px;
+    }
+
+    .content {
+      padding: 100px 20px 60px;
+      text-align: center;
+    }
+
+    .gallery-grid {
+     margin-top: 20px;
+     column-count: 3;
+     column-gap: 15px;
+     padding: 100px 20px 60px;
+    }
+
+    .gallery-grid img {
+     width: 100%;
+     height: auto;
+     display: block;
+     margin-bottom: 15px;
+     border-radius: 8px;
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+     break-inside: avoid;
+    }
+
+
+
+    .back-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #c21807;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 40px auto;
+    }
+
+    .back-button:hover {
+      background-color: #a60f05;
+    }
+
+    @media screen and (max-width: 768px) {
+
+      
+      nav {
+        padding: 6px 12px;
+        max-width: 768px;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      nav img {
+        height: 50px; /* prej 80px */
+      }
+
+      nav a {
+        font-size: 13px;
+        padding: 5px 5px;
+        margin: 0 4px;
+      }
+
+      .nav-links {
+        gap: 5px;
+        justify-content: center;
+        flex: 1;
+        padding-top: 5px;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav ul li {
+        margin: 7px 0;
+      }      
+
+      .gallery-grid img {
+        max-width: 100%;
+      }
+
+      .gallery-grid {
+        column-count: 1;
+      }
+
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="index.html"><img src="images/IMG_1068-Photoroom.png" alt="Caffe Mušketir"></a>
+    <div class="nav-links">
+      <a href="index.html#pocetna">Domov</a>
+      <a href="index.html#dogodki">Aktualno</a>
+      <a href="index.html#prostor">Prostor</a>
+      <a href="index.html#onama">O nas</a>
+      <a href="index.html#cenik">Cenik</a> 
+      <a href="index.html#galerija">Galerija</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </div>
+  </nav>
+
+  <!-- GALLERY -->
+  <section class="gallery-grid" id="prenova-gallery">
+    <!-- Images will be loaded here -->
+  </section>
+
+  <!-- BACK BUTTON -->
+  <div style="text-align: center;">
+    <a href="dogodki.html" class="back-button">← Nazaj na vse dogodke</a>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const gallery = document.getElementById("prenova-gallery");
+      for (let i = 2062; i <= 2085; i++) {
+        const img = document.createElement("img");
+        img.src = `images/Prenova/IMG_${i}.JPG`;
+        img.alt = `Prenova ${i}`;
+        gallery.appendChild(img);
+      }
+    });
+  </script>
+
+</body>
+</html>
