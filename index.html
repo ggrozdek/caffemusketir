@@ -1,600 +1,433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:site_name" content="Caffe Mušketir">
-  <meta property="og:title" content="Caffe Mušketir">
-  <meta property="og:url" content="https://caffemusketir.com/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Caffe Mušketir">
+<meta charset="utf-8" />
+<title>Caffe Mušketir — pristna kava, sproščeno vzdušje</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
 
-  <title>Caffe Mušketir</title>
-  <link rel="icon" href="favicon-256.ico" type="image/x-icon" sizes="256x256">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0J97HVD6Z8"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-0J97HVD6Z8');
-  </script>
-
-  <!-- POPRAVLJENO: ločen script tag za structured data (prej napaka — bilo znotraj GA skripte) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Caffe Mušketir",
-    "alternateName": ["Caffe Musketir", "Mušketir", "Cafe Mušketir", "Cafe Musketir"],
-    "url": "https://caffemusketir.com/"
-  }
-  </script>
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    img  { max-width: 100%; height: auto; display: block; }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4e9d8 url('https://www.transparenttextures.com/patterns/coffee-beans.png') repeat;
-    }
-
-    /* ===== SCROLL ANIMATIONS ===== */
-    .anim {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-    .anim.visible { opacity: 1; transform: none; }
-    .anim-d1 { transition-delay: 0.1s; }
-    .anim-d2 { transition-delay: 0.2s; }
-    .anim-d3 { transition-delay: 0.3s; }
-    .anim-d4 { transition-delay: 0.4s; }
-    @media (prefers-reduced-motion: reduce) {
-      .anim { opacity: 1; transform: none; transition: none; }
-    }
-
-    /* ===== NAVIGATION =====
-       POPRAVEK SPECIFIČNOSTI: ".nav-links" brez "nav " prefiksa,
-       da ga media query (nav .nav-links) pravilno preglasi.
-    */
-    nav {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      background: white;
-      border-bottom: 1px solid #ddd;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-    }
-    nav > a img,
-    nav > img { height: 80px; transition: opacity 0.2s; }
-    nav > a img:hover,
-    nav > img:hover { opacity: 0.85; }
-
-    /* Brez "nav " prefiksa — ključno za pravilno delovanje media queryja */
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: #c21807;
-      font-weight: bold;
-      font-size: 16px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .nav-links a:hover { background: #fef0ee; }
-
-    /* Burger */
-    .burger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-    .burger span {
-      display: block;
-      width: 26px; height: 3px;
-      background: #c21807;
-      border-radius: 2px;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .burger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-    .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .burger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-    /* ===== HERO ===== */
-    section { padding: 120px 20px 100px; text-align: center; position: relative; }
-    .hero {
-      background: #f7f1e3 url(images/Background\ \(2\).png) repeat;
-      display: flex; justify-content: center; align-items: center;
-      padding: 100px 20px; flex-direction: column; text-align: center;
-    }
-    .hero-image {
-      max-width: 500px; width: 90%; height: auto; margin-bottom: 30px;
-      animation: heroUp 0.8s 0.1s ease both;
-    }
-    .cenik-button {
-      display: inline-block; padding: 12px 25px;
-      background: #c21807; color: white; border: none;
-      font-size: 18px; border-radius: 8px; cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
-      animation: heroUp 0.8s 0.4s ease both;
-      box-shadow: 0 4px 14px rgba(194,24,7,0.22);
-    }
-    .cenik-button:hover { background: #a60f05; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(194,24,7,0.3); }
-    @keyframes heroUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: none; }
-    }
-    .hero-side-img {
-      position: absolute; width: 350px;
-      border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .hero-left-img  { left: 0.5%; top: 22%; }
-    .hero-right-img { right: 0.5%; top: 21%; }
-
-    /* ===== DOGODKI ===== */
-    .dogodki {
-      background: #ece2d1 url(images/Background\ \(2\).png) repeat;
-      padding: 80px 20px; text-align: center;
-    }
-    .aktualni-dogodki {
-      margin-top: 30px; display: flex;
-      justify-content: center; flex-wrap: wrap; gap: 20px;
-    }
-    .aktualni-dogodki img {
-      max-width: 350px; width: 100%; height: auto;
-      border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .aktualni-dogodki img:hover { transform: scale(1.03); box-shadow: 0 8px 22px rgba(0,0,0,0.18); }
-    .dogodki-buttons { margin: 30px 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-    .dogodki-buttons .pretekli-gumb {
-      padding: 12px 25px; background: #c21807; color: white;
-      border: none; border-radius: 8px; font-size: 16px; cursor: pointer;
-      text-decoration: none; transition: background 0.3s, transform 0.2s;
-    }
-    .dogodki-buttons .pretekli-gumb:hover { background: #a60f05; transform: translateY(-2px); }
-
-    /* ===== PROSTOR / CAROUSEL ===== */
-    .prostor {
-      background: #f1e8dd url(images/Background\ \(2\).png) repeat;
-      padding: 100px 20px 60px; text-align: center;
-    }
-    .prostor h2 { font-size: 28px; color: #c21807; margin-bottom: 30px; }
-    .carousel-container {
-      overflow: hidden; width: 100%; max-width: 500px; margin: 0 auto;
-      border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative;
-    }
-    .carousel-track { display: flex; transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); }
-    .carousel-track img { width: 100%; max-width: 500px; flex-shrink: 0; height: auto; border-radius: 10px; }
-    .carousel-button {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(0,0,0,0.38); color: white; border: none;
-      padding: 10px 15px; cursor: pointer; border-radius: 50%; font-size: 22px;
-      z-index: 10; transition: background 0.2s, transform 0.2s; display: none;
-    }
-    .carousel-button:hover { background: rgba(0,0,0,0.65); transform: translateY(-50%) scale(1.1); }
-    .carousel-button.left  { left: 10px; }
-    .carousel-button.right { right: 10px; }
-    .carousel-container:hover .carousel-button { display: block; }
-    .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
-    .carousel-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #cbb89a; cursor: pointer; border: none; padding: 0;
-      transition: background 0.3s, transform 0.2s;
-    }
-    .carousel-dot:hover  { transform: scale(1.3); }
-    .carousel-dot.active { background: #c21807; transform: scale(1.25); }
-
-    /* ===== ABOUT ===== */
-    .about { background: #efe5d5 url(images/Background\ \(2\).png) repeat; }
-    .side-img {
-      position: absolute; max-width: 280px; width: 100%;
-      border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .left-img  { left: 0.5%; top: 22%; }
-    .right-img { right: 0.5%; top: 20%; }
-    .about-text {
-      max-width: 700px; margin: 0 auto; padding: 28px 30px;
-      background: #f1e8dd url(images/Background\ \(2\).png) repeat;
-      border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      text-align: left; line-height: 1.7;
-    }
-    .about-text h2 { text-align: center; color: #c21807; margin-top: 0; }
-
-    /* ===== CENIK ===== */
-    .cenik-link-section {
-      background: #f4e9d8 url(images/Background\ \(2\).png) repeat;
-      text-align: center; padding: 80px 20px;
-    }
-    .cenik-link-section h2 { color: #c21807; margin-bottom: 24px; }
-    .cenik-image-button {
-      width: 80%; max-width: 800px; border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer; display: inline-block;
-    }
-    .cenik-image-button:hover { transform: scale(1.02); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
-
-    /* ===== GALLERY ===== */
-    .gallery {
-      background: #f1e8dd url(images/Background\ \(2\).png) repeat;
-      text-align: center; padding: 60px 20px;
-    }
-    .gallery h2 { width: 100%; margin-bottom: 24px; font-size: 28px; color: #c21807; }
-    .gallery-images {
-      display: flex; flex-wrap: wrap;
-      justify-content: center; gap: 15px; margin-bottom: 30px;
-    }
-    .gallery-images img {
-      max-width: 350px; width: 100%; height: 240px;
-      border-radius: 8px; object-fit: cover; cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .gallery-images img:hover { transform: scale(1.05); box-shadow: 0 8px 22px rgba(0,0,0,0.2); }
-    .gallery-button-container { text-align: center; margin-top: 10px; }
-    .more-gallery-button {
-      display: inline-block; padding: 10px 24px; background: #c21807; color: white;
-      border: none; border-radius: 6px; text-decoration: none; font-size: 16px;
-      cursor: pointer; transition: background 0.3s, transform 0.2s;
-    }
-    .more-gallery-button:hover { background: #a60f05; transform: translateY(-2px); }
-
-    /* ===== FOOTER ===== */
-    footer {
-      background: #a60f05; color: white; padding: 40px 20px;
-      display: flex; flex-wrap: wrap; justify-content: space-between; text-align: left;
-    }
-    .footer-column { flex: 1; min-width: 200px; padding: 10px 20px; }
-    .footer-column h3 { margin-top: 0; color: #fff7f0; }
-    .instagram-button, .facebook-button {
-      display: inline-block; margin-top: 8px;
-      padding: 8px 16px; background: #d93636; color: white;
-      text-decoration: none; border-radius: 20px; font-weight: bold;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .instagram-button:hover, .facebook-button:hover { background: #b72e2e; transform: translateY(-1px); }
-
-    /* ===== LIGHTBOX ===== */
-    #lightbox {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.93); z-index: 9999;
-      align-items: center; justify-content: center;
-    }
-    #lightbox.open { display: flex; }
-    .lb-content { max-width: 90vw; max-height: 85vh; display: flex; align-items: center; justify-content: center; }
-    #lb-img {
-      max-width: 90vw; max-height: 85vh; width: auto; height: auto;
-      object-fit: contain; border-radius: 6px;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.5);
-      animation: lbIn 0.22s ease;
-    }
-    @keyframes lbIn {
-      from { opacity: 0; transform: scale(0.94); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    .lb-close {
-      position: fixed; top: 16px; right: 20px;
-      background: rgba(255,255,255,0.1); border: none; color: white;
-      font-size: 28px; cursor: pointer; padding: 2px 10px;
-      border-radius: 6px; line-height: 1.4; z-index: 10000; transition: background 0.2s;
-    }
-    .lb-close:hover { background: rgba(194,24,7,0.75); }
-    .lb-prev, .lb-next {
-      position: fixed; top: 50%; transform: translateY(-50%);
-      background: rgba(255,255,255,0.1); color: white; border: none;
-      font-size: 24px; cursor: pointer; padding: 14px 16px;
-      border-radius: 50%; z-index: 10000; transition: background 0.2s, transform 0.2s;
-    }
-    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.25); transform: translateY(-50%) scale(1.1); }
-    .lb-prev { left: 16px; }
-    .lb-next { right: 16px; }
-    .lb-counter {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,0.6); font-size: 13px; pointer-events: none;
-    }
-
-    /* ===== MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      nav { padding: 8px 16px; }
-      nav > a img, nav > img { height: 50px; }
-      .burger { display: flex; }
-
-      /* Z "nav " prefixom — višja specifičnost preglasi desktop .nav-links { display: flex } */
-      nav .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute; top: 100%; left: 0;
-        width: 100%;
-        background: white;
-        border-top: 1px solid #eee;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.13);
-        padding: 6px 0; gap: 0;
-      }
-      nav .nav-links.open { display: flex; animation: slideDown 0.22s ease; }
-      @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-8px); }
-        to   { opacity: 1; transform: none; }
-      }
-      nav .nav-links a {
-        padding: 13px 22px; font-size: 16px;
-        border-bottom: 1px solid #f5ede4; border-radius: 0; margin: 0;
-      }
-      nav .nav-links a:last-child { border-bottom: none; }
-
-      .hero-side-img { display: none !important; }
-      section { padding: 20px 10px; }
-      .carousel-button { display: block !important; padding: 8px 12px; font-size: 18px; }
-      .side-img { display: none !important; }
-      .gallery-images img { height: auto; }
-      .cenik-image-button { width: 95%; }
-      .aktualni-dogodki { flex-direction: column; align-items: center; }
-      footer { flex-direction: column; }
-      .footer-column { text-align: center !important; padding: 12px 10px; min-width: unset; }
-      .instagram-button, .facebook-button { display: block; margin: 6px auto 0; width: fit-content; }
-      .lb-prev { left: 6px; padding: 10px 12px; font-size: 20px; }
-      .lb-next { right: 6px; padding: 10px 12px; font-size: 20px; }
-    }
-  </style>
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="styles-sections.css" />
+<link rel="stylesheet" href="styles-v2.css" />
+<link rel="stylesheet" href="styles-v3.css" />
+<link rel="stylesheet" href="styles-v4.css" />
+<link rel="stylesheet" href="styles-mobile.css" />
 </head>
+
 <body>
 
-  <nav id="mainNav">
-    <img src="images/IMG_1068-Photoroom.png" alt="Caffe Mušketir" loading="eager" />
-    <button class="burger" id="burger" aria-label="Odpri meni" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="nav-links" id="navLinks">
-      <a href="#pocetna">Domov</a>
-      <a href="#dogodki">Aktualno</a>
-      <a href="#prostor">Prostor</a>
-      <a href="#onama">O nas</a>
-      <a href="#cenik">Cenik</a>
-      <a href="#galerija">Galerija</a>
-      <a href="#kontakt">Kontakt</a>
-    </div>
-  </nav>
-
-  <section class="hero" id="pocetna">
-    <div class="hero-content">
-      <img class="hero-image" src="images/IMG_1070-Photoroom.png" alt="Naslovna slika" loading="eager" />
-      <a href="#cenik" class="cenik-button">Poglej CENIK</a>
-      <img class="hero-side-img hero-left-img" src="images/Screenshot 2025-07-27 105730.png" alt="" loading="lazy" />
-      <img class="hero-side-img hero-right-img" src="images/IMG_3159.JPEG" alt="" loading="lazy" />
-    </div>
-  </section>
-
-  <section class="dogodki" id="dogodki">
-    <h2 class="anim">Aktualno</h2>
-    <div id="aktualniDogodki" class="aktualni-dogodki">
-      <img src="images/IMG_4480.png" alt="Dogodek 1" class="anim anim-d1" loading="lazy" />
-      <img src="images/75DE75F7-2D8B-4AEA-81EC-9205E7771908.jpeg" alt="Dogodek 2" class="anim anim-d2" loading="lazy" />
-    </div>
-    <div class="dogodki-buttons anim anim-d3">
-      <a href="dogodki.html" class="pretekli-gumb">Pretekli dogodki</a>
-    </div>
-  </section>
-
-  <section class="prostor" id="prostor">
-    <h2 class="anim">Prostor</h2>
-    <div class="carousel-container anim anim-d1" id="carouselContainer">
-      <div class="carousel-track" id="carouselTrack">
-        <img src="images/IMG_9656.JPEG" alt="Prostor 1" loading="eager">
-        <img src="images/IMG_9679.JPEG" alt="Prostor 2" loading="lazy">
-        <img src="images/IMG_9682.JPEG" alt="Prostor 3" loading="lazy">
-        <img src="images/IMG_9685.JPEG" alt="Prostor 4" loading="lazy">
-        <img src="images/IMG_9687.JPEG" alt="Prostor 5" loading="lazy">
-        <img src="images/IMG_9672.JPEG" alt="Prostor 6" loading="lazy">
-        <img src="images/IMG_9674.JPEG" alt="Prostor 7" loading="lazy">
-        <img src="images/IMG_9675.JPEG" alt="Prostor 8" loading="lazy">
-        <img src="images/IMG_9676.JPEG" alt="Prostor 9" loading="lazy">
-      </div>
-      <button class="carousel-button left" id="prevBtn">&#10094;</button>
-      <button class="carousel-button right" id="nextBtn">&#10095;</button>
-    </div>
-    <div class="carousel-dots" id="carouselDots"></div>
-  </section>
-
-  <section class="about" id="onama">
-    <img class="side-img left-img" src="images/IMG_9655.JPEG" alt="" loading="lazy" />
-    <img class="side-img right-img" src="images/IMG_3143.JPEG" alt="" loading="lazy" />
-    <div class="about-text anim">
-      <h2>O nas</h2>
-      <p><strong>Caffe Mušketir</strong> je januarja 2025 prevzela nova, predana družina, ki verjame v sproščeno vzdušje, dobro kavo in pristno druženje.</p>
-      <p>Naš prostor ponuja več kot le pijačo – pri nas lahko igrate <strong>biljard</strong> in <strong>pikado</strong>, spremljate <strong>športne prenose</strong> na velikem zaslonu ali pa se preprosto ustavite za klepet ob dobri kavi.</p>
-      <p>Redno prirejamo tudi <strong>tematske dogodke</strong>, <strong>glasbene večere</strong> in <strong>kvize</strong>, zato je pri nas vedno nekaj v zraku. Naš cilj je ustvariti prostor, kjer se vsi počutijo domače, ne glede na to, ali prideš sam ali z družbo.</p>
-      <p>Vabljeni, da postanete del naše zgodbe!</p>
-    </div>
-  </section>
-
-  <section class="cenik-link-section" id="cenik">
-    <h2 class="anim">Cenik</h2>
-    <a href="images/CENIK marec 2026.pdf" target="_blank" class="anim anim-d1">
-      <img src="images/IMG_4313.jpeg" alt="Cenik – klikni za ogled" class="cenik-image-button" loading="lazy" />
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">
+      <img src="assets/favicon.png" alt="" />
+      <span class="nb-name">caffe <span class="accent">mušketir</span></span>
     </a>
-  </section>
-
-  <section class="gallery" id="galerija">
-    <h2 class="anim">Galerija</h2>
-    <div class="gallery-images">
-      <img src="images/IMG_2260.JPG" alt="Galerija 1" class="anim anim-d1" loading="lazy" />
-      <img src="images/IMG_2263.JPG" alt="Galerija 2" class="anim anim-d2" loading="lazy" />
-      <img src="images/IMG_2264.JPG" alt="Galerija 3" class="anim anim-d3" loading="lazy" />
-    </div>
-    <div class="gallery-button-container anim anim-d4">
-      <a href="galerija.html" class="more-gallery-button">Poglej vse slike</a>
-    </div>
-  </section>
-
-  <footer id="kontakt">
-    <div class="footer-column anim">
-      <h3>Kontakt</h3>
-      <p>Naslov: Osojnikova ulica 13, Maribor</p>
-      <p>Telefon: 070 700 691</p>
-      <p>Email: caffemusketir@gmail.com</p>
-    </div>
-    <div class="footer-column anim anim-d1" style="text-align:center">
-      <h3>Rezervacije</h3>
-      <p>Za rezervacije nas pokličite na: <strong>070 700 691</strong></p>
-      <a href="https://www.instagram.com/caffemusketir" target="_blank" class="instagram-button">Instagram: @caffemusketir</a>
-      <a href="https://www.facebook.com/profile.php?id=61573121475328&locale=sl_SI" target="_blank" class="facebook-button">Facebook: Caffe Mušketir</a>
-    </div>
-    <div class="footer-column anim anim-d2" style="text-align:right">
-      <h3>Delovni čas</h3>
-      <p>Ponedeljek – četrtek: 07:00 – 23:00</p>
-      <p>Petek: 07:00 – 00:00</p>
-      <p>Sobota: 08:00 – 00:00</p>
-      <p>Nedelja &amp; Prazniki: 08:00 – 22:00</p>
-    </div>
-  </footer>
-
-  <!-- LIGHTBOX -->
-  <div id="lightbox" role="dialog" aria-modal="true">
-    <button class="lb-close" aria-label="Zapri">&#x2715;</button>
-    <button class="lb-prev"  aria-label="Prejšnja">&#10094;</button>
-    <div class="lb-content"><img id="lb-img" src="" alt="" /></div>
-    <button class="lb-next"  aria-label="Naslednja">&#10095;</button>
-    <div class="lb-counter" id="lb-counter"></div>
+    <nav class="nav-links" aria-label="Glavna navigacija">
+      <a href="#o-nas">O nas</a>
+      <a href="#cenik">Cenik</a>
+      <a href="#aktualno">Aktualno</a>
+      <a href="#galerija">Galerija</a>
+      <a href="#lokal">Lokal</a>
+      <a href="#ekipa">Ekipa</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <button class="burger-btn" aria-label="Meni" aria-expanded="false" onclick="document.body.classList.toggle('nav-open'); this.setAttribute('aria-expanded', document.body.classList.contains('nav-open'));">
+      <span class="bar"></span>
+    </button>
   </div>
+</header>
 
-  <script>
-  /* ===== BURGER ===== */
-  (function() {
-    const burger   = document.getElementById('burger');
-    const navLinks = document.getElementById('navLinks');
-    const mainNav  = document.getElementById('mainNav');
+<main id="top">
 
-    burger.addEventListener('click', () => {
-      const open = navLinks.classList.toggle('open');
-      burger.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', String(open));
-    });
-    navLinks.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        burger.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-      })
-    );
-    document.addEventListener('click', e => {
-      if (!mainNav.contains(e.target)) {
-        navLinks.classList.remove('open');
-        burger.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-      }
-    });
-  })();
+<!-- HERO -->
+<section class="hero">
+  <div class="steam s1"></div>
+  <div class="steam s2"></div>
+  <div class="steam s3"></div>
+  <div class="hero-inner wrap">
+    <img class="hero-logo" src="assets/logo_large.png" alt="Caffe Mušketir" />
+    <p class="hero-tag">Vsi za enega — en za <em>dobro kavo.</em></p>
+    <p class="hero-sub">Sproščeno vzdušje, pristna kava in pravo druženje. Pri nas si vedno doma.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#cenik">
+        Oglej si meni
+        <svg class="arrow" width="16" height="14" viewBox="0 0 16 14" fill="none"><path d="M1 7h13M9 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#kontakt">Pridi na obisk</a>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true"></div>
+</section>
 
-  /* ===== CAROUSEL ===== */
-  (function() {
-    const track  = document.getElementById('carouselTrack');
-    const slides = track.querySelectorAll('img');
-    const dots   = document.getElementById('carouselDots');
-    const prev   = document.getElementById('prevBtn');
-    const next   = document.getElementById('nextBtn');
-    const total  = slides.length;
-    let cur = 0, timer;
+<div class="divider"></div>
 
-    slides.forEach((_, i) => {
-      const d = document.createElement('button');
-      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      d.setAttribute('aria-label', `Slika ${i+1}`);
-      d.onclick = () => go(i);
-      dots.appendChild(d);
-    });
-    function go(i) {
-      cur = (i + total) % total;
-      track.style.transform = `translateX(-${cur * 100}%)`;
-      dots.querySelectorAll('.carousel-dot').forEach((d, j) =>
-        d.classList.toggle('active', j === cur));
-    }
-    const fwd = () => go(cur + 1);
-    const bck = () => go(cur - 1);
-    next.onclick = fwd;
-    prev.onclick = bck;
-    const start = () => { timer = setInterval(fwd, 4000); };
-    const stop  = () => clearInterval(timer);
-    start();
-    const cc = document.getElementById('carouselContainer');
-    cc.addEventListener('mouseenter', stop);
-    cc.addEventListener('mouseleave', start);
-    let tx = 0;
-    cc.addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX; stop(); }, {passive:true});
-    cc.addEventListener('touchend',   e => {
-      const d = tx - e.changedTouches[0].screenX;
-      if (Math.abs(d) > 40) d > 0 ? fwd() : bck();
-      start();
-    }, {passive:true});
-  })();
+<!-- O NAS -->
+<section id="o-nas">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="eyebrow">O nas</p>
+        <h2>Nova zgodba, <em class="accent">stara strast.</em></h2>
+        <p class="lead">Caffe Mušketir je januarja 2025 prevzela nova, predana družina, ki verjame v sproščeno vzdušje, dobro kavo in pristno druženje.</p>
+        <p>Naš prostor ponuja več kot le pijačo — pri nas lahko igrate biljard in pikado, spremljate športne prenose na velikem zaslonu ali pa se preprosto ustavite za klepet ob dobri kavi.</p>
+        <p>Redno prirejamo tudi tematske dogodke, glasbene večere in kvize, zato je pri nas vedno nekaj v zraku. Naš cilj je ustvariti prostor, kjer se vsi počutijo domače — ne glede na to, ali prideš sam ali z družbo.</p>
+        <blockquote class="about-quote">
+          Vabljeni, da postanete del naše zgodbe.
+          <span class="who">— Družina Mušketir</span>
+        </blockquote>
+      </div>
+      <div class="about-visual reveal delay-1">
+        <img src="assets/ekipa.JPG" alt="Lokal / baristka" />
+      </div>
+    </div>
 
-  /* ===== LIGHTBOX ===== */
-  (function() {
-    const lb    = document.getElementById('lightbox');
-    const img   = document.getElementById('lb-img');
-    const cnt   = document.getElementById('lb-counter');
-    let imgs = [], cur = 0;
+    <div class="stats reveal delay-2">
+      <div class="stat"><div class="num">2025</div><div class="label">Pod novim vodstvom</div></div>
+      <div class="stat"><div class="num">7 dni</div><div class="label">v tednu odprto</div></div>
+      <div class="stat"><div class="num">2</div><div class="label">Prostora · spredaj &amp; zadaj</div></div>
+      <div class="stat"><div class="num">∞</div><div class="label">Prijateljskih klepetov</div></div>
+    </div>
+  </div>
+</section>
 
-    function getImgs() { return Array.from(document.querySelectorAll('.gallery-images img')); }
-    function open(i) {
-      imgs = getImgs(); cur = i;
-      img.style.animation = 'none'; img.offsetHeight; img.style.animation = '';
-      img.src = imgs[cur].src; img.alt = imgs[cur].alt;
-      cnt.textContent = `${cur + 1} / ${imgs.length}`;
-      lb.classList.add('open'); document.body.style.overflow = 'hidden';
-    }
-    function close() { lb.classList.remove('open'); document.body.style.overflow = ''; }
-    function prev()  { open((cur - 1 + imgs.length) % imgs.length); }
-    function next()  { open((cur + 1) % imgs.length); }
+<div class="divider"></div>
 
-    document.querySelector('.gallery-images').addEventListener('click', e => {
-      if (e.target.tagName === 'IMG') open(getImgs().indexOf(e.target));
-    });
-    lb.querySelector('.lb-close').onclick = close;
-    lb.querySelector('.lb-prev' ).onclick = prev;
-    lb.querySelector('.lb-next' ).onclick = next;
-    lb.addEventListener('click', e => { if (e.target === lb) close(); });
-    document.addEventListener('keydown', e => {
-      if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape') close();
-      if (e.key === 'ArrowLeft') prev();
-      if (e.key === 'ArrowRight') next();
-    });
-    let tx = 0;
-    lb.addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX; }, {passive:true});
-    lb.addEventListener('touchend',   e => {
-      const d = tx - e.changedTouches[0].screenX;
-      if (Math.abs(d) > 50) d > 0 ? next() : prev();
-    }, {passive:true});
-  })();
+<section id="aktualno" class="aktualno-lite">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center; margin-bottom: 40px;">
+      <p class="eyebrow" style="justify-content:center;">Aktualno</p>
+    </div>
+    <div class="ak-image-lite reveal delay-1">
+      <img src="assets/aktualno.PNG" alt="Aktualno" />
+    </div>
+  </div>
+</section>
 
-  /* ===== SCROLL ANIMATIONS ===== */
-  (function() {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.anim').forEach(el => obs.observe(el));
-  })();
-  </script>
+<div class="btn-block">
+  <a class="btn btn-primary" href="pretekli-dogodki.html">
+    Pretekli dogodki
+    <svg class="arrow" width="16" height="14" viewBox="0 0 16 14" fill="none"><path d="M1 7h13M9 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+<!-- CENIK + NOVI IZDELKI -->
+<!-- id="cenik" — QR koda kaže na /#cenik -->
+<section id="cenik">
+  <div class="wrap">
+    <div class="menu-grid">
+      <a class="menu-card reveal" href="menu.pdf" target="_blank" rel="noopener" aria-label="Odpri PDF cenika">
+        <span class="badge">Klikni</span>
+        <span class="corner"></span>
+        <div class="menu-preview">
+         <img src="assets/cenik-predogled.png" alt="Predogled cenika" />
+        </div>
+        <span class="cta">
+          Odpri cenik
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7h15M11 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </a>
+
+      <div class="menu-highlights reveal delay-1">
+        <p class="eyebrow">Cenik</p>
+        <h2>Naš <em class="accent">cenik</em>.</h2>
+        <p class="lead">Klikni sliko na levi in se ti odpre celoten cenik v PDF obliki — kave, ledene kave, hladne pijače, sokovi in več.</p>
+        <p>V ponudbi imamo tudi <strong>tople sendviče</strong> in <strong>sladoledne lučke</strong>. Imate željo, ki je ni v ceniku? Vprašajte natakarja — vedno se da kaj iznajti.</p>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 80px;">
+      <p class="eyebrow">Novosti</p>
+      <h2>Novi izdelki</h2>
+      <p style="max-width: 560px; margin-top: 8px;">Novosti, ki so se ravnokar pridružile naši ponudbi.</p>
+    </div>
+    <div class="posters-grid reveal delay-1">
+      <article class="poster poster-stacked">
+        <div class="poster-img"><img src="assets/novost1.jpeg" alt="Novi izdelek 1" /></div>
+        <div class="pcaption-below">
+          <span class="pbadge">Novo</span>
+          <span class="pname">ORANGINA</span>
+          <span class="pdesc">Okusi orangino z originalnim ali rogue okusom.</span>
+        </div>
+      </article>
+      <article class="poster poster-stacked">
+        <div class="poster-img"><img src="assets/novost2.JPEG" alt="Novi izdelek 2" /></div>
+        <div class="pcaption-below">
+          <span class="pbadge">NOVO</span>
+          <span class="pname">SCHWEPPES Poper&Cherry</span>
+          <span class="pname">FANTA Lemon</span>
+          <span class="pdesc">Probaj nova okusa Schweppesa in Fante</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<div class="divider" style="margin-top: 80px;"></div>
+
+<!-- GALERIJA -->
+<section id="galerija">
+  <div class="wrap">
+    <div class="reveal" style="display:flex; align-items:end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom: 28px;">
+      <div>
+        <p class="eyebrow">Galerija</p>
+        <h2>Drobci našega <em class="accent">vsakdana</em>.</h2>
+      </div>
+      <p style="max-width: 360px;">Pena, ki se sklanja čez rob. Sonce skozi okno ob 8.32. Pogovori, ki bi morali biti uradni, pa so se končali v smehu.</p>
+    </div>
+    <div class="gallery-wrap reveal delay-1">
+      <div class="gallery-nav">
+        <button class="prev" aria-label="Prejšnja">
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M17 7H2M7 2 2 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="next" aria-label="Naslednja">
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7h15M11 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="gallery-rail" role="region" aria-label="Galerija slik">
+        <div class="gallery-card">
+          <img src="assets/galerija/IMG_9652.JPEG" alt="Biljard" />
+          <span class="gcap">Biljard</span>
+        </div>
+        <div class="gallery-card tall">
+          <img src="assets/galerija/IMG_2256.JPG" alt="Za pultom" />
+          <span class="gcap">Za pultom</span>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/galerija/IMG_2260.JPG" alt="Hausbrandt" />
+          <span class="gcap">Hausbrandt</span>
+        </div>
+        <div class="gallery-card wide">
+          <img src="assets/galerija/kavaledena.png" alt="Za vroče dni" />
+          <span class="gcap">Za vroče dni</span>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/galerija/kava.JPEG" alt="Kava" />
+          <span class="gcap">Kava</span>
+        </div>
+        <div class="gallery-card tall">
+          <img src="assets/galerija/IMG_9654.JPEG" alt="Hladno in osvežilno" />
+          <span class="gcap">Hladno in osvežilno</span>
+        </div>
+      </div><!-- /.gallery-rail -->
+    </div><!-- /.gallery-wrap -->
+  </div><!-- /.wrap -->
+</section>
+
+<div class="divider"></div>
+
+<!-- LOKAL -->
+<section id="lokal">
+  <div class="wrap">
+    <div class="reveal" style="display:flex; align-items:end; justify-content:space-between; gap: 24px; flex-wrap: wrap;">
+      <div>
+        <p class="eyebrow">Lokal</p>
+        <h2>Naš prostor — <em class="accent">vaš drugi dom</em>.</h2>
+      </div>
+      <p style="max-width: 380px;">Topla lesena oprema, mehka svetloba, kotički za samoto in mize za druženje. Spredaj kava, zadaj pa še veliko več.</p>
+    </div>
+
+    <div class="place-collage reveal delay-1">
+      <div class="tile-a"><img src="assets/lokal/IMG_9676.JPEG" alt="Glavni prostor" /></div>
+      <div class="tile-b"><img src="assets/lokal/IMG_9675.JPEG" alt="Pult in aparat" /></div>
+      <div class="tile-c"><img src="assets/lokal/IMG_9685.JPEG" alt="Detajl" /></div>
+      <div class="tile-d"><img src="assets/lokal/IMG_9679.JPEG" alt="Terasa zunaj" /></div>
+      <div class="tile-e"><img src="assets/lokal/IMG_9674.JPEG" alt="Mirni kotiček" /></div>
+    </div>
+
+    <!-- PROSTOR ZADAJ -->
+    <div class="zadaj reveal">
+      <div class="ztext">
+        <p class="eyebrow">Prostor zadaj</p>
+        <h2>Za pultom se igra <em class="accent">resno</em>.</h2>
+        <p class="lead">Velik zadnji prostor s pravim klubskim duhom — biljard, pikado in udobni kavči za večere, ki se zavlečejo do polnoči.</p>
+        <ul class="features">
+          <li><span class="fi">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.8"/></svg>
+          </span> Biljardna miza</li>
+          <li><span class="fi">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>
+          </span> Pikado — elektronska tabla, ekipne igre</li>
+          <li><span class="fi">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 11v6h18v-6M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M3 17v2M21 17v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span> Separeji za male in velike skupine</li>
+          <li><span class="fi">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span> Velik zaslon — športni prenosi v živo</li>
+        </ul>
+      </div>
+      <div class="zphotos">
+        <div class="za"><img src="assets/lokal/IMG_9656.JPEG" alt="Biljardna miza" /></div>
+        <div><img src="assets/lokal/IMG_9672.JPEG" alt="Pikado" /></div>
+        <div><img src="assets/lokal/IMG_9672.JPEG" alt="Separeji" /></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POSTANI DEL EKIPE -->
+<section id="ekipa">
+  <div class="wrap">
+    <div class="hiring reveal">
+      <div>
+        <p class="eyebrow">Zaposlitev</p>
+        <h2>Postani del <em>naše ekipe</em>.</h2>
+        <p>Iščemo <strong style="color:#fff;">študentke</strong>, ki so pripravljene postati del družine Mušketir. Če rada delaš z ljudmi, imaš nasmeh in odprto glavo — povabljena, da se javiš.</p>
+        <ul class="perks">
+          <li><span class="check">✓</span> <strong style="color:#fff;">Dobro plačilo</strong></li>
+          <li><span class="check">✓</span> <strong style="color:#fff;">Fleksibilen urnik</strong> — sama si izbereš termine</li>
+          <li><span class="check">✓</span> Sproščeno, mlado okolje in topla ekipa</li>
+        </ul>
+        <div class="apply-ctas">
+          <a class="btn btn-light" href="tel:+38670700691">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.34 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.54 2.81.66a2 2 0 0 1 1.72 2.07Z" stroke="currentColor" stroke-width="1.8"/></svg>
+            Pokliči 070 700 691
+          </a>
+          <a class="btn btn-outline-light" href="https://instagram.com/caffemusketir" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Piši na Instagram DM
+          </a>
+        </div>
+      </div>
+      <div class="hiring-visual">
+        <span class="stamp">Vabljene ♡</span>
+        <img src="assets/vrata_logo.JPG" alt="Ekipa Mušketir" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- KONTAKT / ODPIRALNI ČAS -->
+<section id="kontakt">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center; max-width: 640px; margin: 0 auto 56px;">
+      <p class="eyebrow" style="justify-content: center;">Obiščite nas</p>
+      <h2>Pridi po kavo. <em class="accent">Ostani po pogovor.</em></h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="info-card reveal">
+        <h3>Odpiralni čas</h3>
+        <ul class="hours-list">
+          <li><span class="day">Ponedeljek</span><span class="time">07:00 – 23:00</span></li>
+          <li><span class="day">Torek</span><span class="time">07:00 – 23:00</span></li>
+          <li><span class="day">Sreda</span><span class="time">07:00 – 23:00</span></li>
+          <li><span class="day">Četrtek</span><span class="time">07:00 – 23:00</span></li>
+          <li><span class="day">Petek</span><span class="time">07:00 – 00:00</span></li>
+          <li><span class="day">Sobota</span><span class="time">08:00 – 00:00</span></li>
+          <li><span class="day">Nedelja &amp; prazniki</span><span class="time">08:00 – 22:00</span></li>
+        </ul>
+        <span class="now-open"><span class="dot"></span><span>Trenutno odprto</span></span>
+      </div>
+
+      <div class="info-card reveal delay-1">
+        <h3>Kontakt</h3>
+        <ul class="contact-list">
+          <li>
+            <span class="ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-7.58 8-13a8 8 0 1 0-16 0c0 5.42 8 13 8 13Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+            </span>
+            <span>
+              <span class="label">Naslov</span>
+              <span class="val">Osojnikova ulica 13, 2000 Maribor</span>
+            </span>
+          </li>
+          <li>
+            <span class="ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.34 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.54 2.81.66a2 2 0 0 1 1.72 2.07Z" stroke="currentColor" stroke-width="1.8"/></svg>
+            </span>
+            <span>
+              <span class="label">Telefon</span>
+              <span class="val"><a href="tel:+38670700691">070 700 691</a></span>
+            </span>
+          </li>
+          <li>
+            <span class="ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            </span>
+            <span>
+              <span class="label">Instagram</span>
+              <span class="val"><a href="https://instagram.com/caffemusketir" target="_blank" rel="noopener">@caffemusketir</a></span>
+            </span>
+          </li>
+          <li>
+            <span class="ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </span>
+            <span>
+              <span class="label">Facebook</span>
+              <span class="val"><a href="https://www.facebook.com/profile.php?id=61573121475328&locale=sl_SI" target="_blank" rel="noopener">Caffe Mušketir</a></span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="map reveal delay-2" aria-label="Zemljevid Osojnikova ulica 13, Maribor">
+      <iframe
+        src="https://www.google.com/maps?q=Osojnikova+ulica+13,+2000+Maribor,+Slovenia&output=embed&z=16&hl=sl"
+        width="100%" height="100%"
+        style="border:0; display:block; filter: saturate(.9);"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Caffe Mušketir — Osojnikova ulica 13, Maribor">
+      </iframe>
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Osojnikova+ulica+13+Maribor" target="_blank" rel="noopener">Odpri v Google Zemljevidih →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid footer-grid-3">
+      <div class="footer-brand">
+        <img src="assets/favicon.png" alt="" />
+        <div class="ftxt">caffe <span class="accent">mušketir</span></div>
+        <p>Sproščeno vzdušje, pristna kava in pravo druženje — od januarja 2025 pod novim vodstvom.</p>
+      </div>
+      <div>
+        <h4>Obišči</h4>
+        <ul>
+          <li>Osojnikova ulica 13</li>
+          <li>2000 Maribor</li>
+          <li><a href="tel:+38670700691">070 700 691</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Sledi nam</h4>
+        <div class="socials">
+          <a href="https://instagram.com/caffemusketir" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61573121475328&locale=sl_SI" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <p style="margin-top: 20px; font-size: 13px;">@caffemusketir</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Caffe Mušketir · Vse pravice pridržane</span>
+      <span>Skuhano z ♡ v Mariboru</span>
+    </div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+
+<!-- PDF cenik preview — PDF.js v3 (UMD, bolj zanesljiv) -->
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+
 
 </body>
 </html>

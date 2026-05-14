@@ -1,0 +1,135 @@
+/* v4: tighter padding, smaller footer, burger nav, prettier back button */
+
+/* === SECTION padding: tighter === */
+section { padding: clamp(56px, 7vw, 90px) 0 !important; }
+.hero { min-height: 80vh; padding-top: 50px !important; padding-bottom: 30px !important; }
+
+/* === BURGER NAV (mobile) === */
+.burger-btn {
+  display: none;
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(192,35,27,.18);
+  align-items: center; justify-content: center;
+  cursor: pointer; padding: 0;
+  color: var(--red-deep);
+  transition: background .2s;
+}
+.burger-btn:hover { background: var(--red); color: #fff; }
+.burger-btn .bar {
+  display: block; width: 18px; height: 2px;
+  background: currentColor;
+  position: relative; transition: transform .25s, background .2s;
+}
+.burger-btn .bar::before, .burger-btn .bar::after {
+  content: ""; position: absolute; left: 0; width: 100%; height: 2px;
+  background: currentColor; transition: transform .25s, top .25s;
+}
+.burger-btn .bar::before { top: -6px; }
+.burger-btn .bar::after { top: 6px; }
+body.nav-open .burger-btn .bar { background: transparent; }
+body.nav-open .burger-btn .bar::before { top: 0; transform: rotate(45deg); }
+body.nav-open .burger-btn .bar::after { top: 0; transform: rotate(-45deg); }
+
+@media (max-width: 860px) {
+  .burger-btn { display: inline-flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%; left: 12px; right: 12px;
+    flex-direction: column;
+    background: rgba(252, 232, 226, 0.98);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(192,35,27,.18);
+    border-radius: 16px;
+    padding: 8px;
+    margin-top: 8px;
+    box-shadow: 0 20px 60px rgba(43,26,19,.18);
+    gap: 0;
+  }
+  body.nav-open .nav-links { display: flex; }
+  .nav-links a {
+    padding: 14px 16px;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 16px;
+  }
+  .nav-links a:hover { background: rgba(230,51,41,.1); }
+  .nav-links a::after { display: none; }
+}
+
+/* === AKTUALNO — title only "Aktualno" once === */
+.aktualno-lite h2 { display: none; }
+.aktualno-lite .eyebrow {
+  font-size: 14px;
+  letter-spacing: .26em;
+}
+
+/* === FOOTER — slimmer === */
+.footer {
+  padding: 56px 0 24px;
+  margin-top: 40px;
+}
+.footer-grid { gap: 32px; }
+.footer-brand img { width: 56px; }
+.footer-brand .ftxt { font-size: 22px; margin-top: 6px; }
+.footer-brand p { font-size: 13px; margin-top: 8px; max-width: 320px; }
+.footer h4 { margin-bottom: 12px; }
+.footer ul { gap: 6px; }
+.footer ul a, .footer ul li { font-size: 13px; }
+.footer-bottom { margin-top: 36px; padding-top: 18px; font-size: 12px; }
+.socials a { width: 32px; height: 32px; }
+.socials a svg { width: 14px; height: 14px; }
+
+/* === SMALLER divider whitespace === */
+.divider { margin-top: 0; margin-bottom: 0; }
+
+/* === CENIK image preview === */
+.menu-card .cover { display: none; }
+.menu-card .menu-preview {
+  position: absolute; inset: 0;
+  background: var(--cream-light);
+}
+.menu-card .menu-preview img,
+.menu-card .menu-preview canvas {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.menu-card .menu-preview::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(43,26,19,.4) 100%);
+  pointer-events: none;
+}
+.menu-card .badge, .menu-card .corner, .menu-card .cta { z-index: 2; }
+.menu-card .corner { color: #fff; mix-blend-mode: difference; }
+.menu-card .cta { background: var(--red); color: #fff; }
+
+/* === BACK BUTTON (Pretekli dogodki) === */
+.back-pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 18px 10px 14px;
+  background: #fff;
+  color: var(--red-deep);
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: .02em;
+  box-shadow: 0 4px 14px rgba(192,35,27,.12);
+  border: 1px solid rgba(192,35,27,.18);
+  transition: transform .2s, background .2s, color .2s, box-shadow .2s;
+  margin-bottom: 28px;
+}
+.back-pill:hover {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+  transform: translateX(-4px);
+  box-shadow: 0 8px 24px rgba(192,35,27,.32);
+}
+.back-pill svg { transition: transform .2s; }
+.back-pill:hover svg { transform: translateX(-2px); }

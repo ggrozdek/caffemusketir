@@ -1,0 +1,203 @@
+/* =============================================
+   styles-mobile.css — Mobilna optimizacija
+   Caffe Mušketir
+   ============================================= */
+
+/* --- PDF fallback card --- */
+.menu-fallback {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  background: linear-gradient(155deg, var(--cream-light) 0%, var(--cream-deep) 100%);
+}
+.menu-fallback span {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 32px; font-weight: 700; letter-spacing: .2em;
+  color: var(--ink); opacity: .25;
+}
+
+/* =============================================
+   TABLET  ≤ 900px
+   ============================================= */
+@media (max-width: 900px) {
+
+  /* Hiring: manj paddinga */
+  .hiring { padding: 40px 32px; gap: 40px; }
+
+  /* Kontakt info-card */
+  .info-card { padding: 28px 24px; }
+
+  /* Map height */
+  .map { aspect-ratio: 16 / 9; min-height: 300px; }
+}
+
+/* =============================================
+   MOBITEL  ≤ 600px
+   ============================================= */
+@media (max-width: 600px) {
+
+  /* ── Splošno ── */
+  .wrap { padding: 0 16px; }
+
+  section { padding: clamp(40px, 10vw, 60px) 0 !important; }
+
+  h2 { font-size: clamp(28px, 8vw, 40px) !important; margin-bottom: 14px; }
+  h3 { font-size: clamp(18px, 5vw, 22px) !important; }
+  p  { font-size: 15px; }
+  p.lead { font-size: 17px; }
+
+  /* ── NAV ── */
+  .nav-inner { padding: 12px 16px; }
+  .nav-brand .nb-name { font-size: 18px; }
+  .nav-brand img { width: 30px; height: 30px; }
+
+  /* ── HERO ── */
+  .hero { min-height: 70vh !important; padding-top: 20px !important; }
+  .hero-logo { width: clamp(220px, 78vw, 320px) !important; }
+  .hero-tag  { font-size: clamp(17px, 5vw, 22px); margin-top: 16px; }
+  .hero-sub  { font-size: 14px; margin-top: 10px; }
+  .hero-ctas {
+    flex-direction: column; align-items: stretch;
+    gap: 10px; margin-top: 24px; width: 100%; max-width: 320px;
+  }
+  .hero-ctas .btn { justify-content: center; padding: 13px 20px; }
+  .hero-scroll { display: none; }
+
+  /* ── EYEBROW ── */
+  .eyebrow { font-size: 10px; letter-spacing: .18em; margin-bottom: 12px; }
+
+  /* ── O NAS ── */
+  .about-grid { gap: 32px; }
+  .about-text p { font-size: 15px; }
+  .about-quote { font-size: 18px; padding: 18px 20px; margin-top: 24px; }
+  /* kup stamp skrij — overflow na mobilu */
+  .cup-stamp { display: none; }
+
+  /* ── STATS ── */
+  .stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px; padding: 20px 16px; margin-top: 40px;
+  }
+  .stats .num   { font-size: 28px; }
+  .stats .label { font-size: 10px; }
+
+  /* ── CENIK KARTICA ── */
+  .menu-grid { gap: 28px; }
+  .menu-card { aspect-ratio: 3 / 4; }  /* malo krajša na mobilu */
+
+  /* ── NOVI IZDELKI ── */
+  .posters-grid { gap: 16px; }
+  .poster-stacked .pname { font-size: 22px; }
+
+  /* ── AKTUALNO ── */
+  .ak-image-lite {
+    width: 100% !important;
+    aspect-ratio: 2 / 3;
+    border-radius: 16px;
+  }
+
+  /* ── GALERIJA — gallery nav buttons ── */
+  /* Na mobilu jih premaknemo iz absolutne pozicije v normalen flow */
+  .gallery-wrap { display: flex; flex-direction: column; gap: 0; }
+  .gallery-nav {
+    position: static !important;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .gallery-nav button { width: 42px; height: 42px; }
+  /* Rail kartica: malo ožja */
+  .gallery-card { width: min(80vw, 300px) !important; }
+
+  /* ── LOKAL — place collage ── */
+  .place-collage { grid-auto-rows: 110px; gap: 10px; }
+
+  /* ── PROSTOR ZADAJ ── */
+  .zadaj { margin-top: 48px; gap: 28px; }
+  .zadaj .zphotos { grid-auto-rows: 110px; }
+  .zadaj .ztext .features li { font-size: 14px; }
+  .zadaj .ztext .features .fi { width: 38px; height: 38px; flex: 0 0 38px; }
+
+  /* ── EKIPA / HIRING ── */
+  .hiring {
+    padding: 32px 20px !important;
+    gap: 28px;
+    border-radius: 20px;
+  }
+  .hiring h2 { font-size: clamp(26px, 7vw, 36px) !important; }
+  .hiring p  { font-size: 15px !important; }
+  .hiring .perks li { font-size: 14px; }
+  .apply-ctas { flex-direction: column; gap: 10px; }
+  .apply-ctas .btn { justify-content: center; width: 100%; }
+  /* sliko ekipe skrij na najmanjših zaslonih za čistejši prikaz */
+  .hiring-visual { display: none; }
+
+  /* ── KONTAKT ── */
+  .contact-grid { gap: 16px; }
+  .info-card { padding: 20px 16px; border-radius: 14px; }
+  .hours-list li { font-size: 14px; padding: 10px 0; }
+  .hours-list .time { font-size: 16px; }
+  .contact-list li { gap: 12px; padding: 12px 0; }
+  .contact-list .ico { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 10px; }
+  .contact-list .val { font-size: 16px; }
+
+  /* ── MAPA ── */
+  .map {
+    aspect-ratio: auto !important;
+    height: 260px;
+    min-height: 0 !important;
+    border-radius: 14px;
+    margin-top: 24px;
+  }
+
+  /* ── FOOTER ── */
+  .footer { padding: 40px 0 20px; margin-top: 24px; }
+  .footer-grid,
+  .footer-grid-3 { grid-template-columns: 1fr !important; gap: 24px; }
+  .footer-brand img { width: 44px; }
+  .footer-brand .ftxt { font-size: 18px; }
+  .footer-brand p { font-size: 12px; max-width: none; }
+  .footer h4 { margin-bottom: 10px; }
+  .footer ul li, .footer ul a { font-size: 13px; }
+  .footer-bottom {
+    flex-direction: column; gap: 4px;
+    text-align: center; margin-top: 24px; padding-top: 16px;
+    font-size: 11px;
+  }
+
+  /* ── PRETEKLI DOGODKI — ep-grid ── */
+  .ep-grid  { gap: 16px; }
+  .ep-card  { border-radius: 16px; }
+  .ep-labels { gap: 6px 16px; margin-top: 12px; }
+  .ep-label .ep-name { font-size: 22px; }
+
+  /* ── EVENT GALERIJA — ev-grid ── */
+  .ev-hero { padding: 56px 0 16px; }
+  .ev-hero h1 { font-size: clamp(32px, 9vw, 52px); }
+  .ev-gallery { padding: 20px 0 56px; }
+  .lb-stage { padding: 0 8px; }
+  .lb-top { padding: 14px 16px; }
+  .lb-title { font-size: 20px; }
+
+  /* ── BACK PILL ── */
+  .back-pill { font-size: 13px; padding: 8px 14px 8px 12px; }
+
+  /* ── DIVIDER ── */
+  .divider { margin: 0; }
+
+  /* ── BTN-BLOCK (Pretekli dogodki) ── */
+  .btn-block { margin-top: 20px; }
+  .btn-block .btn { padding: 13px 22px; font-size: 14px; }
+}
+
+/* =============================================
+   ZELO MAJHNI ZASLONI  ≤ 380px  (starejši iPhoni)
+   ============================================= */
+@media (max-width: 380px) {
+  .wrap { padding: 0 12px; }
+  .hero-logo { width: 75vw !important; }
+  .hiring { padding: 28px 16px !important; }
+  .stats { padding: 16px 12px; }
+  .stats .num { font-size: 24px; }
+}

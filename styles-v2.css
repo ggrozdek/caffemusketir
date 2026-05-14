@@ -1,0 +1,203 @@
+/* v2 overrides + new sections */
+
+/* nav: tighten + nicer wordmark */
+.nav-brand img { height: 36px; width: auto; }
+.nav-brand .nb-name { font-size: 21px; }
+
+/* hero logo proportions: new logo is 500x336 (3:2 landscape) */
+.hero-logo {
+  width: clamp(300px, 50vw, 560px);
+  height: auto;
+}
+
+/* AKTUALNO — feature image fills section with blurred bg */
+.aktualno {
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0;
+  overflow: hidden;
+}
+.aktualno .ak-bg {
+  position: absolute; inset: 0;
+  z-index: 0;
+  filter: blur(60px) saturate(1.1);
+  transform: scale(1.15);
+  opacity: .9;
+  pointer-events: none;
+  overflow: hidden;
+}
+.aktualno .ak-bg img {
+  width: 100%; height: 100%; display: block;
+  --slot-bg: transparent;
+}
+.aktualno .ak-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(43,26,19,.25), rgba(43,26,19,.45));
+}
+.aktualno .ak-wrap { position: relative; z-index: 1; }
+.aktualno .ak-head {
+  text-align: center; color: #fff; max-width: 720px; margin: 0 auto 36px;
+}
+.aktualno .ak-head .eyebrow { color: #ffd5d2; }
+.aktualno .ak-head .eyebrow::before { background: #ffd5d2; }
+.aktualno .ak-head h2 { color: #fff; }
+.aktualno .ak-head p { color: rgba(255,255,255,.85); font-size: 18px; }
+.aktualno .ak-image {
+  position: relative;
+  width: min(560px, 88vw);
+  aspect-ratio: 2 / 3;
+  margin: 0 auto;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,.4);
+  border: 1px solid rgba(255,255,255,.18);
+}
+.aktualno .ak-image img { width: 100%; height: 100%; display: block; }
+.aktualno .ak-cta { display: flex; justify-content: center; margin-top: 36px; }
+.aktualno .ak-cta .btn-primary { background: #fff; color: var(--red); }
+.aktualno .ak-cta .btn-primary:hover { background: var(--cream-light); }
+
+/* NOVI IZDELKI — two big poster cards */
+.posters-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  margin-top: 32px;
+}
+@media (max-width: 800px) { .posters-grid { grid-template-columns: 1fr; } }
+.poster {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow-2);
+  border: 1px solid rgba(43,26,19,.08);
+  background: var(--cream-light);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.poster:hover { transform: translateY(-6px); box-shadow: 0 30px 80px rgba(43,26,19,.18); }
+.poster img { width: 100%; height: 100%; display: block; }
+.poster .pcaption {
+  position: absolute; left: 22px; right: 22px; bottom: 22px;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 16px 18px;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(43,26,19,.18);
+}
+.poster .pbadge {
+  align-self: flex-start;
+  background: var(--red); color: #fff;
+  padding: 4px 10px; border-radius: 999px;
+  font-size: 10px; letter-spacing: .2em; font-weight: 700; text-transform: uppercase;
+}
+.poster .pname { font-family: "Cormorant Garamond"; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.1; }
+.poster .pdesc { font-size: 14px; color: var(--ink-soft); font-style: italic; }
+
+/* PROSTOR ZADAJ */
+.zadaj {
+  margin-top: 80px;
+  display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;
+}
+@media (max-width: 900px) { .zadaj { grid-template-columns: 1fr; gap: 40px; } }
+.zadaj .ztext .features {
+  list-style: none; padding: 0; margin: 24px 0 0;
+  display: grid; gap: 14px;
+}
+.zadaj .ztext .features li {
+  display: flex; gap: 14px; align-items: center;
+  font-size: 16px; color: var(--ink);
+}
+.zadaj .ztext .features .fi {
+  flex: 0 0 44px; width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(230,51,41,.12); color: var(--red);
+  display: grid; place-items: center;
+}
+.zadaj .zphotos {
+  display: grid; grid-template-columns: 2fr 1fr; grid-auto-rows: 180px; gap: 14px;
+}
+.zadaj .zphotos > * {
+  border-radius: 16px; overflow: hidden;
+  background: var(--cream-light);
+  border: 1px solid rgba(43,26,19,.08);
+  box-shadow: var(--shadow-1);
+}
+.zadaj .zphotos > * img { width: 100%; height: 100%; display: block; }
+.zadaj .zphotos .za { grid-row: span 2; }
+@media (max-width: 600px){
+  .zadaj .zphotos { grid-template-columns: 1fr 1fr; grid-auto-rows: 140px; }
+  .zadaj .zphotos .za { grid-row: span 1; grid-column: span 2; }
+}
+
+/* HIRING — replaces loyalty */
+.hiring {
+  display: grid; grid-template-columns: 1.05fr .95fr; gap: 60px; align-items: center;
+  background: linear-gradient(140deg, var(--red) 0%, #b41d14 100%);
+  color: #fff;
+  border-radius: 28px; padding: 64px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(192,35,27,.25);
+}
+.hiring::before {
+  content: ""; position: absolute; inset: 0;
+  background: url("assets/beans-bg.png") repeat;
+  background-size: 360px; opacity: .12; mix-blend-mode: screen;
+}
+.hiring > * { position: relative; z-index: 1; }
+.hiring .eyebrow { color: #fdd; }
+.hiring .eyebrow::before { background: #fdd; }
+.hiring h2 { color: #fff; }
+.hiring p { color: rgba(255,255,255,.88); font-size: 18px; max-width: 480px; }
+.hiring .perks {
+  list-style: none; padding: 0; margin: 24px 0 28px; display: grid; gap: 12px;
+}
+.hiring .perks li { display: flex; gap: 12px; align-items: center; font-size: 16px; }
+.hiring .perks .check {
+  flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%;
+  background: #fff; color: var(--red); display: grid; place-items: center; font-weight: 700;
+}
+.hiring .btn-light {
+  background: #fff; color: var(--red);
+}
+.hiring .btn-light:hover { background: var(--cream-light); }
+.hiring-visual {
+  position: relative;
+  border-radius: 22px; overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 30px 60px rgba(0,0,0,.25);
+}
+.hiring-visual img { width:100%; height:100%; display:block; }
+.hiring-visual .stamp {
+  position: absolute; top: 18px; left: 18px;
+  background: #fff; color: var(--red);
+  padding: 8px 14px; border-radius: 999px;
+  font-size: 11px; letter-spacing: .2em; font-weight: 800;
+}
+@media (max-width: 900px){
+  .hiring { grid-template-columns: 1fr; padding: 44px; }
+}
+
+/* FOOTER → red */
+.footer { background: var(--red); color: rgba(255,255,255,.86); }
+.footer::before {
+  background-image: url("assets/beans-bg.png");
+  opacity: .1; mix-blend-mode: multiply;
+}
+.footer h4 { color: #fff; }
+.footer ul a { color: rgba(255,255,255,.85); }
+.footer ul a:hover { color: #fff; }
+.footer-brand .ftxt { color: #fff; }
+.footer-brand .ftxt .accent { color: #ffd5d2; }
+.footer-brand p { color: rgba(255,255,255,.72); }
+.footer-bottom {
+  border-top-color: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.7);
+}
+.socials a { background: rgba(255,255,255,.16); color: #fff; }
+.socials a:hover { background: #fff; color: var(--red); }
+
+/* page divider stronger */
+.divider { background: linear-gradient(90deg, transparent, rgba(43,26,19,.22), transparent); }
+
+/* Pretekli dogodki page-link button */
+.btn-block { display: flex; justify-content: center; margin-top: 28px; position: relative; z-index: 2; }

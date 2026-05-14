@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8" />
+<title>Otvoritev — Caffe Mušketir</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="styles-sections.css" />
+<link rel="stylesheet" href="styles-v2.css" />
+<link rel="stylesheet" href="styles-v3.css" />
+<link rel="stylesheet" href="styles-v4.css" />
+<link rel="stylesheet" href="styles-mobile.css" />
+<style>
+  .ev-hero { padding: 80px 0 24px; text-align: center; }
+  .ev-hero h1 { font-size: clamp(40px, 6vw, 72px); margin: 6px 0 0; }
+  .ev-hero .sub { max-width: 540px; margin: 12px auto 0; color: var(--ink-soft); font-style: italic; font-family: "Cormorant Garamond", serif; font-size: 20px; }
+  .ev-gallery { padding: 32px 0 80px; }
+  .ev-grid { columns: 3; column-gap: 16px; }
+  .ev-grid > * {
+    break-inside: avoid; margin-bottom: 16px; border-radius: 14px; overflow: hidden;
+    background: var(--cream-light); border: 1px solid rgba(43,26,19,.1);
+    box-shadow: var(--shadow-1); cursor: zoom-in;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .ev-grid > *:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(43,26,19,.18); }
+  .ev-grid > .h-tall   { aspect-ratio: 3 / 4; }
+  .ev-grid > .h-square { aspect-ratio: 1 / 1; }
+  .ev-grid > .h-wide   { aspect-ratio: 4 / 3; }
+  @media (max-width: 900px) { .ev-grid { columns: 2; } }
+  @media (max-width: 560px) { .ev-grid { columns: 1; } }
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(20,12,8,.94); z-index: 1000;
+    display: none; flex-direction: column; backdrop-filter: blur(8px);
+  }
+  .lightbox.open { display: flex; }
+  .lb-top { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; color: #fff; }
+  .lb-title { font-family: "Cormorant Garamond", serif; font-size: 24px; font-weight: 600; }
+  .lb-count { font-size: 13px; opacity: .7; letter-spacing: .14em; }
+  .lb-close {
+    width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.1);
+    border: none; cursor: pointer; color: #fff; display: grid; place-items: center;
+    transition: background .2s, transform .2s;
+  }
+  .lb-close:hover { background: var(--red); transform: rotate(90deg); }
+  .lb-stage { flex: 1; display: grid; place-items: center; position: relative; padding: 0 80px; min-height: 0; }
+  .lb-stage img { max-width: 100%; max-height: calc(100vh - 160px); object-fit: contain; border-radius: 8px; }
+  .lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,.12); border: none; cursor: pointer; color: #fff;
+    display: grid; place-items: center; transition: background .2s;
+  }
+  .lb-nav:hover { background: var(--red); }
+  .lb-nav.prev { left: 16px; } .lb-nav.next { right: 16px; }
+  .lb-nav:disabled { opacity: .3; cursor: not-allowed; }
+  .lb-nav:disabled:hover { background: rgba(255,255,255,.12); }
+  @media (max-width: 700px) { .lb-stage { padding: 0 12px; } .lb-nav { width: 44px; height: 44px; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/favicon.png" alt="" />
+      <span class="nb-name">caffe <span class="accent">mušketir</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Glavna navigacija">
+      <a href="index.html#o-nas">O nas</a>
+      <a href="index.html#cenik">Cenik</a>
+      <a href="index.html#aktualno">Aktualno</a>
+      <a href="index.html#galerija">Galerija</a>
+      <a href="index.html#lokal">Lokal</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </nav>
+    <button class="burger-btn" aria-label="Meni" aria-expanded="false"
+      onclick="document.body.classList.toggle('nav-open'); this.setAttribute('aria-expanded', document.body.classList.contains('nav-open'));">
+      <span class="bar"></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="ev-hero wrap">
+  <a class="back-pill" href="pretekli-dogodki.html">
+    <svg width="14" height="12" viewBox="0 0 18 14" fill="none"><path d="M17 7H2M7 2 2 7l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Nazaj na pretekle dogodke
+  </a>
+  <p class="eyebrow" style="justify-content:center;">Dogodek N°.02</p>
+  <h1>Otvoritev</h1>
+  <p class="sub">21. Februar 2025. Dan, ko se je vse skupaj začelo.</p>
+</section>
+
+<section class="ev-gallery">
+  <div class="wrap">
+    <!-- Slike se generirajo samodejno iz spodnjega skripta -->
+    <div class="ev-grid" id="ev-grid"></div>
+  </div>
+</section>
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lb-top">
+    <div>
+      <div class="lb-title">Otvoritev</div>
+      <div class="lb-count" id="lb-count">— / —</div>
+    </div>
+    <button class="lb-close" aria-label="Zapri" onclick="closeLightbox()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18 18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="lb-stage">
+    <button class="lb-nav prev" id="lb-prev" aria-label="Prejšnja">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="lb-content"></div>
+    <button class="lb-nav next" id="lb-next" aria-label="Naslednja">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid footer-grid-3">
+      <div class="footer-brand">
+        <img src="assets/favicon.png" alt="" />
+        <div class="ftxt">caffe <span class="accent">mušketir</span></div>
+        <p>Sproščeno vzdušje, pristna kava in pravo druženje.</p>
+      </div>
+      <div><h4>Obišči</h4>
+        <ul><li>Osojnikova ulica 13</li><li>2000 Maribor</li><li><a href="tel:+38670700691">070 700 691</a></li></ul>
+      </div>
+      <div><h4>Sledi nam</h4>
+        <div class="socials">
+          <a href="https://instagram.com/caffemusketir" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61573121475328&locale=sl_SI" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Caffe Mušketir</span><span>Skuhano z ♡ v Mariboru</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  KONFIGURACIJA — samo to uredi če dodaš slike
+// ═══════════════════════════════════════════════
+const CONFIG = {
+  mapa:   "assets/dogodki/otvoritev", // mapa s slikami
+  ime:    "otvoritev",                // ime datoteke (brez številke)
+  skupaj: 73,                         // skupno število slik
+  ext:    "JPG",                      // končnica večine slik
+  // Posebni primeri: { stevilka: "drugacna_koncnica" }
+  posebni: { 1: "jpg" }
+};
+// ═══════════════════════════════════════════════
+
+const SIZES = ["h-tall","h-square","h-wide","h-tall","h-square","h-tall","h-wide","h-square"];
+const grid  = document.getElementById("ev-grid");
+
+// Generiraj mrežo slik
+for (let i = 1; i <= CONFIG.skupaj; i++) {
+  const ext = CONFIG.posebni[i] ?? CONFIG.ext;
+  const num = String(i).padStart(2, "0");
+  const src = `${CONFIG.mapa}/${CONFIG.ime}-${num}.${ext}`;
+
+  const wrap = document.createElement("div");
+  wrap.className    = SIZES[(i - 1) % SIZES.length];
+  wrap.dataset.idx  = i - 1;
+
+  const img = document.createElement("img");
+  img.src     = src;
+  img.alt     = `Otvoritev ${i}`;
+  img.loading = "lazy"; // za 73 slik je lazy load nujno!
+
+  wrap.appendChild(img);
+  grid.appendChild(wrap);
+  wrap.addEventListener("click", () => openLightbox(i - 1));
+}
+
+// ── Lightbox ──────────────────────────────────
+const lb       = document.getElementById("lightbox");
+const lbContent= document.getElementById("lb-content");
+const lbCount  = document.getElementById("lb-count");
+const lbPrev   = document.getElementById("lb-prev");
+const lbNext   = document.getElementById("lb-next");
+let lbIdx = 0, lbImages = [];
+
+function openLightbox(idx) {
+  lbImages = Array.from(grid.querySelectorAll("img")).map(i => i.src);
+  if (!lbImages.length) return;
+  lbIdx = Math.min(idx, lbImages.length - 1);
+  lb.classList.add("open"); lb.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+  renderLb();
+}
+function closeLightbox() {
+  lb.classList.remove("open"); lb.setAttribute("aria-hidden","true");
+  document.body.style.overflow = "";
+}
+window.closeLightbox = closeLightbox;
+
+function renderLb() {
+  lbContent.innerHTML = "";
+  const img = document.createElement("img");
+  img.src = lbImages[lbIdx];
+  lbContent.appendChild(img);
+  lbCount.textContent = `${lbIdx + 1} / ${lbImages.length}`;
+  lbPrev.disabled = lbIdx === 0;
+  lbNext.disabled = lbIdx === lbImages.length - 1;
+}
+lbPrev.onclick = () => { if (lbIdx > 0) { lbIdx--; renderLb(); } };
+lbNext.onclick = () => { if (lbIdx < lbImages.length - 1) { lbIdx++; renderLb(); } };
+document.addEventListener("keydown", e => {
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape")     closeLightbox();
+  if (e.key === "ArrowLeft")  lbPrev.click();
+  if (e.key === "ArrowRight") lbNext.click();
+});
+lb.addEventListener("click", e => { if (e.target === lb) closeLightbox(); });
+</script>
+</body>
+</html>

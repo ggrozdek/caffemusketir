@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8" />
+<title>Pretekli dogodki — Caffe Mušketir</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="styles-sections.css" />
+<link rel="stylesheet" href="styles-v2.css" />
+<link rel="stylesheet" href="styles-v3.css" />
+<link rel="stylesheet" href="styles-v4.css" />
+<link rel="stylesheet" href="styles-mobile.css" />
+<style>
+  .pd-hero { padding: 80px 0 28px; text-align: center; }
+  .pd-hero h1 { font-size: clamp(40px, 6vw, 72px); margin: 0; }
+  .pd-hero .sub { max-width: 520px; margin: 14px auto 0; color: var(--ink-soft); }
+  .events-picker { padding: 28px 0 100px; }
+  .ep-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  @media (max-width: 860px) { .ep-grid { grid-template-columns: 1fr; } }
+  .ep-card {
+    display: block; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden;
+    background: var(--cream-light); border: 1px solid rgba(43,26,19,.1);
+    box-shadow: var(--shadow-1); transition: transform .35s ease, box-shadow .35s ease;
+    text-decoration: none; position: relative;
+  }
+  .ep-card:hover { transform: translateY(-8px); box-shadow: 0 30px 70px rgba(43,26,19,.22); }
+  .ep-labels {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 18px;
+  }
+  @media (max-width: 860px) { .ep-labels { grid-template-columns: 1fr; } }
+  .ep-label { text-align: center; }
+  .ep-label .ep-name {
+    font-family: "Cormorant Garamond", serif; font-size: 28px; font-weight: 700;
+    color: var(--ink); line-height: 1.1;
+  }
+  .ep-label .ep-meta { font-size: 13px; color: var(--ink-soft); font-style: italic; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/favicon.png" alt="" />
+      <span class="nb-name">caffe <span class="accent">mušketir</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Glavna navigacija">
+      <a href="index.html#o-nas">O nas</a>
+      <a href="index.html#cenik">Cenik</a>
+      <a href="index.html#aktualno">Aktualno</a>
+      <a href="index.html#galerija">Galerija</a>
+      <a href="index.html#lokal">Lokal</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </nav>
+    <button class="burger-btn" aria-label="Meni" aria-expanded="false" onclick="document.body.classList.toggle('nav-open'); this.setAttribute('aria-expanded', document.body.classList.contains('nav-open'));">
+      <span class="bar"></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="pd-hero wrap">
+  <a class="back-pill" href="index.html">
+    <svg width="14" height="12" viewBox="0 0 18 14" fill="none"><path d="M17 7H2M7 2 2 7l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Nazaj na domačo stran
+  </a>
+  <p class="eyebrow" style="justify-content:center;">Arhiv</p>
+  <h1>Pretekli <em class="accent">dogodki</em></h1>
+  <p class="sub">Klikni na sliko za pregled galerije dogodka.</p>
+</section>
+
+<section class="events-picker">
+  <div class="wrap">
+    <div class="ep-grid">
+      <!-- SLIKE: assets/dogodki/prenova-cover.jpg, otvoritev-cover.jpg, kafansko-cover.jpg -->
+      <a class="ep-card" href="prenova.html">
+        <img src="assets/dogodki/PRENOVA.png" alt="Prenova lokala" />
+      </a>
+      <a class="ep-card" href="otvoritev.html">
+        <img src="assets/dogodki/Otvoritev.png" alt="Otvoritev" />
+      </a>
+      <a class="ep-card" href="kafansko.html">
+        <img src="assets/dogodki/kafansko.png" alt="Kafansko veče" />
+      </a>
+    </div>
+    <div class="ep-labels">
+      <div class="ep-label">
+        <div class="ep-name">Prenova</div>
+        <div class="ep-meta">prej &amp; potem</div>
+      </div>
+      <div class="ep-label">
+        <div class="ep-name">Otvoritev</div>
+        <div class="ep-meta">21. februrar 2025</div>
+      </div>
+      <div class="ep-label">
+        <div class="ep-name">Kafansko veče</div>
+        <div class="ep-meta">glasba do polnoči</div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid footer-grid-3">
+      <div class="footer-brand">
+        <img src="assets/favicon.png" alt="" />
+        <div class="ftxt">caffe <span class="accent">mušketir</span></div>
+        <p>Sproščeno vzdušje, pristna kava in pravo druženje.</p>
+      </div>
+      <div>
+        <h4>Obišči</h4>
+        <ul>
+          <li>Osojnikova ulica 13</li>
+          <li>2000 Maribor</li>
+          <li><a href="tel:+38670700691">070 700 691</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Sledi nam</h4>
+        <div class="socials">
+          <a href="https://instagram.com/caffemusketir" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61573121475328&locale=sl_SI" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Caffe Mušketir</span>
+      <span>Skuhano z ♡ v Mariboru</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
