@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8" />
+<title>Prijava — Caffe Mušketir</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="staff.css" />
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/favicon.png" alt="" />
+      <span class="nb-name">caffe <span class="accent">mušketir</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Glavna navigacija">
+      <a href="index.html">Nazaj na stran</a>
+    </nav>
+  </div>
+</header>
+
+<main class="staff-main narrow">
+  <div class="staff-card" style="margin-top: 40px;">
+    <p class="eyebrow">Za zaposlene</p>
+    <h2>Prijava</h2>
+    <p style="margin-top:0;">Prijavi se s svojim imenom in geslom.</p>
+
+    <div class="msg err" id="setupWarn" style="display:none;">
+      Firebase še ni nastavljen — odpri datoteko <strong>firebase-config.js</strong> in sledi navodilom v NAVODILA.md.
+    </div>
+
+    <form id="loginForm" autocomplete="on">
+      <div class="field">
+        <label for="username">Uporabniško ime</label>
+        <input type="text" id="username" name="username" autocomplete="username" required />
+      </div>
+      <div class="field">
+        <label for="password">Geslo</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required />
+      </div>
+      <div class="msg err" id="err"></div>
+      <button class="btn-staff" type="submit" id="submitBtn">Prijavi se</button>
+    </form>
+  </div>
+</main>
+
+<script>
+(function () {
+  if (!musFirebaseReady()) {
+    document.getElementById("setupWarn").style.display = "block";
+    document.getElementById("submitBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+
+  function goHome(email) {
+    var isAdmin = email === ADMIN_EMAIL;
+    try { localStorage.setItem("mus_role", isAdmin ? "admin" : "worker"); } catch (e) {}
+    location.href = isAdmin ? "admin.html" : "zaposleni.html";
+  }
+
+  // če je že prijavljen, ga preusmeri
+  var unsub = auth.onAuthStateChanged(function (user) {
+    unsub();
+    if (user) goHome(user.email);
+  });
+
+  var form = document.getElementById("loginForm");
+  var err = document.getElementById("err");
+  var btn = document.getElementById("submitBtn");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    err.style.display = "none";
+    btn.disabled = true;
+    try {
+      var email = musUsernameToEmail(document.getElementById("username").value);
+      if (!email) throw new Error("Vnesi uporabniško ime.");
+      var password = document.getElementById("password").value;
+      var cred = await auth.signInWithEmailAndPassword(email, password);
+      goHome(cred.user.email);
+    } catch (ex) {
+      var code = ex && ex.code;
+      err.textContent =
+        (code === "auth/invalid-credential" || code === "auth/wrong-password" ||
+         code === "auth/user-not-found" || code === "auth/invalid-email")
+          ? "Napačno ime ali geslo."
+          : (code === "auth/too-many-requests"
+              ? "Preveč poskusov — počakaj nekaj minut."
+              : (ex.message || "Napaka pri prijavi."));
+      err.style.display = "block";
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

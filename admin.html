@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8" />
+<title>Admin — Caffe Mušketir</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="staff.css" />
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="cms-schema.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/favicon.png" alt="" />
+      <span class="nb-name">caffe <span class="accent">mušketir</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Nazaj na stran</a>
+      <a href="#" id="logoutLink" style="color: var(--red); font-weight: 700;">Odjava</a>
+    </nav>
+  </div>
+</header>
+
+<main class="staff-main">
+  <div class="staff-top">
+    <div>
+      <p class="eyebrow">Administracija</p>
+      <h1 style="margin:0;">Nadzorna <em class="accent">plošča</em></h1>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="urnik">Urnik</button>
+    <button class="tab-btn" data-tab="delavke">Delavke</button>
+    <button class="tab-btn" data-tab="vsebina">Vsebina strani</button>
+    <button class="tab-btn" data-tab="nastavitve">Nastavitve</button>
+  </div>
+
+  <!-- ============ URNIK ============ -->
+  <section class="tab-panel active" id="tab-urnik">
+    <div class="staff-card">
+      <div class="week-nav">
+        <button class="btn-staff small secondary" id="wkPrev">‹ Prejšnji</button>
+        <span class="wk-label" id="wkLabel"></span>
+        <button class="btn-staff small secondary" id="wkNext">Naslednji ›</button>
+        <span id="wkWindowState" style="font-size:13px; color: var(--ink-mute);"></span>
+      </div>
+      <h2 style="margin-top:0;">Želje delavk</h2>
+      <p style="margin-top:0;">Kaj so si delavke izbrale ob prijavi. To so samo želje — pravi urnik sestaviš spodaj.</p>
+      <div class="table-scroll"><table class="sched-table" id="schedTable"></table></div>
+      <ul class="count-list" id="countList"></ul>
+    </div>
+
+    <div class="staff-card">
+      <h2 style="margin-top:0;">Pravi urnik</h2>
+      <p style="margin-top:0;">Klikni <strong>Generiraj urnik</strong> — termini, kjer si je izmeno želela natanko ena delavka, se izpolnijo sami, ostali ostanejo rdeči. Nato klikni katerokoli polje in izberi delavko (lahko tudi spremeniš že izpolnjena). Ko je urnik končan, klikni <strong>POTRDI URNIK</strong> — takrat ga delavke vidijo na svojih profilih (vsaka samo svoje izmene).</p>
+      <div class="final-bar">
+        <button class="btn-staff" id="genBtn">Generiraj urnik</button>
+        <button class="btn-staff secondary" id="imgBtn">Prenesi kot sliko</button>
+        <button class="btn-staff" id="publishBtn" style="background:#256029;">POTRDI URNIK</button>
+        <span class="final-status" id="finalStatus"></span>
+      </div>
+      <div class="table-scroll"><table class="sched-table final-table" id="finalTable"></table></div>
+      <div class="msg" id="finalMsg"></div>
+    </div>
+  </section>
+
+  <!-- ============ DELAVKE ============ -->
+  <section class="tab-panel" id="tab-delavke">
+    <div class="staff-card">
+      <h2 style="margin-top:0;">Dodaj delavko</h2>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+        <div class="field"><label>Ime in priimek</label><input type="text" id="nwName" /></div>
+        <div class="field"><label>Uporabniško ime</label><input type="text" id="nwUser" /></div>
+        <div class="field"><label>Geslo (vsaj 6 znakov)</label><input type="text" id="nwPass" /></div>
+        <div class="field"><label>Status</label>
+          <select id="nwRedna">
+            <option value="0">Navadna</option>
+            <option value="1">REDNA (min. 5 izmen)</option>
+          </select>
+        </div>
+      </div>
+      <div class="msg" id="nwMsg"></div>
+      <button class="btn-staff" id="nwAdd">Dodaj delavko</button>
+    </div>
+
+    <div class="staff-card">
+      <h2 style="margin-top:0;">Vse delavke</h2>
+      <div class="msg" id="wMsg"></div>
+      <div class="table-scroll">
+      <table class="workers-table">
+        <thead><tr><th>Ime</th><th>Uporabniško ime</th><th>Status</th><th></th></tr></thead>
+        <tbody id="workersBody"></tbody>
+      </table>
+      </div>
+      <p style="font-size:13px; color:var(--ink-mute); margin-bottom:0;">
+        Če delavka pozabi geslo: odstrani jo tukaj, v Firebase konzoli (Authentication → Users) izbriši njen račun, nato jo dodaj znova z novim geslom.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ VSEBINA ============ -->
+  <section class="tab-panel" id="tab-vsebina">
+    <div class="staff-card">
+      <h2 style="margin-top:0;">Urejanje vsebine strani</h2>
+      <p>Spremeni tekste in slike po odsekih. Slike se pri nalaganju samodejno pomanjšajo. Spremembe so vidne, ko klikneš <strong>Shrani vse spremembe</strong>.</p>
+      <div id="cmsForm"></div>
+      <div class="msg" id="cmsMsg"></div>
+      <button class="btn-staff" id="cmsSave">Shrani vse spremembe</button>
+    </div>
+  </section>
+
+  <!-- ============ NASTAVITVE ============ -->
+  <section class="tab-panel" id="tab-nastavitve">
+    <div class="staff-card">
+      <h2 style="margin-top:0;">Prijave na izmene</h2>
+      <p>Prijave se <strong>samodejno</strong> odprejo vsako soboto (do konca nedelje) za naslednji teden. Tukaj lahko to ročno povoziš.</p>
+      <div class="field">
+        <label>Način</label>
+        <select id="winMode">
+          <option value="auto">Samodejno (sobota + nedelja)</option>
+          <option value="open">Ročno ODPRTO (takoj)</option>
+          <option value="closed">Ročno ZAPRTO</option>
+        </select>
+      </div>
+      <div class="msg" id="winMsg"></div>
+      <button class="btn-staff" id="winSave">Shrani</button>
+    </div>
+
+    <div class="staff-card">
+      <h2 style="margin-top:0;">Zamenjaj admin geslo</h2>
+      <div class="field"><label>Trenutno geslo</label><input type="password" id="pwCur" autocomplete="current-password" /></div>
+      <div class="field"><label>Novo geslo (vsaj 6 znakov)</label><input type="password" id="pwNew" autocomplete="new-password" /></div>
+      <div class="msg" id="pwMsg"></div>
+      <button class="btn-staff" id="pwSave">Zamenjaj geslo</button>
+    </div>
+  </section>
+</main>
+
+<!-- okno za izbiro delavke na terminu -->
+<div class="chooser-overlay" id="chooser" style="display:none;">
+  <div class="chooser-box">
+    <h3 id="chooserTitle"></h3>
+    <div id="chooserList"></div>
+    <button class="btn-staff secondary" id="chooserCancel" style="margin-top:6px;">Prekliči</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  if (!musFirebaseReady()) { location.href = "prijava.html"; return; }
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+  var db = firebase.firestore();
+
+  var $ = function (id) { return document.getElementById(id); };
+  var DAYS = ["Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota", "Nedelja"];
+  var workersCache = {}; // uid -> {name, username, redna, active}
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function showMsg(id, ok, text) {
+    var el = $(id);
+    el.className = "msg " + (ok ? "ok" : "err");
+    el.textContent = text;
+    el.style.display = "block";
+    if (ok) setTimeout(function () { el.style.display = "none"; }, 4500);
+  }
+
+  // ---------- zavihki ----------
+  document.querySelectorAll(".tab-btn").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".tab-btn").forEach(function (x) { x.classList.remove("active"); });
+      document.querySelectorAll(".tab-panel").forEach(function (x) { x.classList.remove("active"); });
+      b.classList.add("active");
+      $("tab-" + b.dataset.tab).classList.add("active");
+    });
+  });
+
+  // ---------- datumi ----------
+  function mondayOfNextWeek() {
+    var d = new Date();
+    var day = d.getDay();
+    d.setDate(d.getDate() + (day === 0 ? 1 : 8 - day));
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+  var viewWeek = mondayOfNextWeek(); // privzeto teden, za katerega tečejo prijave
+
+  function iso(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function fmt(d, off) {
+    var x = new Date(d); x.setDate(x.getDate() + (off || 0));
+    return x.getDate() + "." + (x.getMonth() + 1) + ".";
+  }
+
+  // ---------- urnik ----------
+  async function loadSchedule() {
+    var week = iso(viewWeek);
+    $("wkLabel").textContent = "Teden " + fmt(viewWeek) + " – " + fmt(viewWeek, 6) + " " + viewWeek.getFullYear();
+
+    var snap = await db.collection("signups").where("week", "==", week).get();
+    var entries = snap.docs.map(function (d) {
+      var e = d.data();
+      var w = workersCache[e.uid]; // ažurno ime/status, če delavka še obstaja
+      return {
+        uid: e.uid,
+        name: w ? w.name : e.name,
+        redna: w ? w.redna === true : e.redna === true,
+        picks: e.picks || [],
+      };
+    });
+
+    // zapomni si želje po terminih (za generiranje in oznake pri izbiri)
+    lastEntries = entries;
+    wishesBySlot = {};
+    entries.forEach(function (e) {
+      e.picks.forEach(function (p) {
+        var k = "d" + p.day + "_" + p.shift;
+        (wishesBySlot[k] = wishesBySlot[k] || []).push(e.uid);
+      });
+    });
+
+    var grid = {};
+    entries.forEach(function (e) {
+      e.picks.forEach(function (p) {
+        var k = p.day + ":" + p.shift;
+        (grid[k] = grid[k] || []).push(e);
+      });
+    });
+
+    var html = "<thead><tr><th style='width:130px;'>Dan</th><th>DOP (dopoldan)</th><th>POP (popoldan)</th></tr></thead><tbody>";
+    for (var d = 0; d < 7; d++) {
+      html += "<tr><th style='background:var(--cream-deep); color:var(--ink);'>" + DAYS[d] +
+              "<br><span style='font-weight:400;font-size:12px;'>" + fmt(viewWeek, d) + "</span></th>";
+      ["DOP", "POP"].forEach(function (s) {
+        var who = grid[d + ":" + s] || [];
+        html += who.length
+          ? "<td>" + who.map(function (e) {
+              return "<span class='who" + (e.redna ? " redna" : "") + "'>" + esc(e.name) + (e.redna ? " ★" : "") + "</span>";
+            }).join("") + "</td>"
+          : "<td class='empty'>—</td>";
+      });
+      html += "</tr>";
+    }
+    $("schedTable").innerHTML = html + "</tbody>";
+
+    $("countList").innerHTML = entries.length
+      ? entries.map(function (e) {
+          var short = e.redna && e.picks.length < 5;
+          return "<li class='" + (short ? "short" : "") + "'>" + esc(e.name) + (e.redna ? " ★REDNA" : "") +
+                 " — " + e.picks.length + " izmen" + (short ? " (premalo!)" : "") + "</li>";
+        }).join("")
+      : "<li>Za ta teden še ni prijav.</li>";
+  }
+
+  $("wkPrev").addEventListener("click", function () { viewWeek.setDate(viewWeek.getDate() - 7); loadSchedule().then(loadFinal); });
+  $("wkNext").addEventListener("click", function () { viewWeek.setDate(viewWeek.getDate() + 7); loadSchedule().then(loadFinal); });
+
+  // ---------- pravi urnik ----------
+  var lastEntries = [];
+  var wishesBySlot = {};   // "d0_DOP" -> [uid, ...]
+  var finalSlots = {};     // "d0_DOP" -> uid ali ""
+  var finalPublished = false;
+  var finalDirty = false;
+
+  function slotKey(day, shift) { return "d" + day + "_" + shift; }
+
+  function resolveName(uid) {
+    if (workersCache[uid]) return workersCache[uid].name;
+    var e = lastEntries.find(function (x) { return x.uid === uid; });
+    return e ? e.name : "(izbrisana)";
+  }
+
+  async function loadFinal() {
+    var week = iso(viewWeek);
+    try {
+      var doc = await db.collection("schedules").doc(week).get();
+      if (doc.exists) {
+        finalSlots = doc.data().slots || {};
+        finalPublished = doc.data().published === true;
+        finalDirty = doc.data().dirty === true;
+      } else {
+        finalSlots = {}; finalPublished = false; finalDirty = false;
+      }
+    } catch (e) {
+      finalSlots = {}; finalPublished = false; finalDirty = false;
+    }
+    renderFinal();
+  }
+
+  function renderFinal() {
+    var html = "<thead><tr><th style='width:130px;'>Dan</th><th>DOP (dopoldan)</th><th>POP (popoldan)</th></tr></thead><tbody>";
+    for (var d = 0; d < 7; d++) {
+      html += "<tr><th style='background:var(--cream-deep); color:var(--ink);'>" + DAYS[d] +
+              "<br><span style='font-weight:400;font-size:12px;'>" + fmt(viewWeek, d) + "</span></th>";
+      ["DOP", "POP"].forEach(function (s) {
+        var uid = finalSlots[slotKey(d, s)] || "";
+        html += uid
+          ? "<td data-day='" + d + "' data-shift='" + s + "'><span class='who'>" + esc(resolveName(uid)) + "</span></td>"
+          : "<td class='slot-empty' data-day='" + d + "' data-shift='" + s + "'>+ izberi</td>";
+      });
+      html += "</tr>";
+    }
+    $("finalTable").innerHTML = html + "</tbody>";
+
+    var st = $("finalStatus");
+    if (finalPublished && !finalDirty) { st.className = "final-status ok"; st.textContent = "✓ Urnik je potrjen"; }
+    else if (finalPublished && finalDirty) { st.className = "final-status draft"; st.textContent = "Spremembe še niso potrjene!"; }
+    else if (Object.keys(finalSlots).length) { st.className = "final-status draft"; st.textContent = "Osnutek — še ni potrjen"; }
+    else { st.className = "final-status"; st.textContent = ""; }
+  }
+
+  async function saveDraft() {
+    finalDirty = true;
+    renderFinal();
+    try {
+      await db.collection("schedules").doc(iso(viewWeek)).set({
+        week: iso(viewWeek),
+        slots: finalSlots,
+        published: finalPublished,
+        dirty: true,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (ex) {
+      showMsg("finalMsg", false, "Napaka pri shranjevanju osnutka: " + (ex.message || ex));
+    }
+  }
+
+  $("genBtn").addEventListener("click", function () {
+    var hasAny = Object.keys(finalSlots).some(function (k) { return finalSlots[k]; });
+    if (hasAny && !confirm("Obstoječi urnik za ta teden bo prepisan. Nadaljujem?")) return;
+    finalSlots = {};
+    for (var d = 0; d < 7; d++) {
+      ["DOP", "POP"].forEach(function (s) {
+        var wish = wishesBySlot[slotKey(d, s)] || [];
+        finalSlots[slotKey(d, s)] = wish.length === 1 ? wish[0] : "";
+      });
+    }
+    saveDraft();
+    showMsg("finalMsg", true, "Urnik generiran — rdeča polja izpolni sam, nato klikni POTRDI URNIK.");
+  });
+
+  // klik na polje -> izbira delavke
+  $("finalTable").addEventListener("click", function (e) {
+    var td = e.target.closest("td[data-day]");
+    if (!td) return;
+    openChooser(Number(td.dataset.day), td.dataset.shift);
+  });
+
+  function openChooser(day, shift) {
+    var key = slotKey(day, shift);
+    var wishes = wishesBySlot[key] || [];
+    $("chooserTitle").textContent = DAYS[day] + " " + fmt(viewWeek, day) + " · " + shift;
+    var list = $("chooserList");
+    list.innerHTML = "";
+
+    Object.keys(workersCache)
+      .filter(function (uid) { return workersCache[uid].active === true; })
+      .sort(function (a, b) { return String(workersCache[a].name).localeCompare(String(workersCache[b].name), "sl"); })
+      .forEach(function (uid) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "chooser-item";
+        var nm = document.createElement("span");
+        nm.textContent = workersCache[uid].name + (workersCache[uid].redna ? " ★" : "");
+        b.appendChild(nm);
+        if (wishes.indexOf(uid) !== -1) {
+          var hint = document.createElement("span");
+          hint.className = "hint";
+          hint.textContent = "✓ si je želela";
+          b.appendChild(hint);
+        }
+        if (finalSlots[key] === uid) b.style.borderColor = "var(--red)";
+        b.addEventListener("click", function () {
+          finalSlots[key] = uid;
+          closeChooser();
+          saveDraft();
+        });
+        list.appendChild(b);
+      });
+
+    var clr = document.createElement("button");
+    clr.type = "button";
+    clr.className = "chooser-item clear";
+    clr.textContent = "✕ Izprazni polje";
+    clr.addEventListener("click", function () {
+      finalSlots[key] = "";
+      closeChooser();
+      saveDraft();
+    });
+    list.appendChild(clr);
+
+    $("chooser").style.display = "flex";
+  }
+
+  function closeChooser() { $("chooser").style.display = "none"; }
+  $("chooserCancel").addEventListener("click", closeChooser);
+  $("chooser").addEventListener("click", function (e) { if (e.target === $("chooser")) closeChooser(); });
+
+  // POTRDI URNIK -> vsaka delavka dobi svoj zapis (vidi samo svoje izmene)
+  $("publishBtn").addEventListener("click", async function () {
+    var week = iso(viewWeek);
+    var perWorker = {};
+    var emptyCount = 0;
+    for (var d = 0; d < 7; d++) {
+      ["DOP", "POP"].forEach(function (s) {
+        var uid = finalSlots[slotKey(d, s)] || "";
+        if (uid) (perWorker[uid] = perWorker[uid] || []).push({ day: d, shift: s });
+        else emptyCount++;
+      });
+    }
+    var q = "Potrdim urnik za teden " + fmt(viewWeek) + " – " + fmt(viewWeek, 6) + "?";
+    if (emptyCount) q += "\n\nPozor: " + emptyCount + " terminov je še praznih.";
+    q += "\nDelavke bodo urnik takoj videle na svojih profilih.";
+    if (!confirm(q)) return;
+
+    $("publishBtn").disabled = true;
+    try {
+      var batch = db.batch();
+      batch.set(db.collection("schedules").doc(week), {
+        week: week,
+        slots: finalSlots,
+        published: true,
+        dirty: false,
+        publishedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      // pobriši zapise delavk, ki niso več na urniku
+      var existing = await db.collection("myschedule").where("week", "==", week).get();
+      existing.docs.forEach(function (docu) {
+        if (!perWorker[docu.data().uid]) batch.delete(docu.ref);
+      });
+      Object.keys(perWorker).forEach(function (uid) {
+        batch.set(db.collection("myschedule").doc(week + "_" + uid), {
+          week: week,
+          uid: uid,
+          name: resolveName(uid),
+          picks: perWorker[uid],
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      });
+      await batch.commit();
+      finalPublished = true;
+      finalDirty = false;
+      renderFinal();
+      showMsg("finalMsg", true, "Urnik potrjen! Delavke ga zdaj vidijo na svojih profilih.");
+    } catch (ex) {
+      showMsg("finalMsg", false, "Napaka pri potrjevanju: " + (ex.message || ex));
+    }
+    $("publishBtn").disabled = false;
+  });
+
+  // prenos urnika kot slika (PNG)
+  $("imgBtn").addEventListener("click", function () {
+    var W = 1000, titleH = 92, headH = 56, rowH = 62, pad = 24;
+    var H = titleH + headH + 7 * rowH + pad;
+    var colDan = 240;
+    var colW = (W - colDan) / 2;
+    var cv = document.createElement("canvas");
+    cv.width = W; cv.height = H;
+    var ctx = cv.getContext("2d");
+
+    ctx.fillStyle = "#faf3e2";
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = "#2b1a13";
+    ctx.font = "700 30px 'Cormorant Garamond', Georgia, serif";
+    ctx.fillText("Caffe Mušketir — urnik", 24, 42);
+    ctx.font = "600 18px Manrope, sans-serif";
+    ctx.fillStyle = "#c0231b";
+    ctx.fillText("Teden " + fmt(viewWeek) + " – " + fmt(viewWeek, 6) + " " + viewWeek.getFullYear(), 24, 72);
+
+    var top = titleH;
+    ctx.fillStyle = "#2b1a13";
+    ctx.fillRect(0, top, W, headH);
+    ctx.fillStyle = "#faf3e2";
+    ctx.font = "700 17px Manrope, sans-serif";
+    ctx.fillText("Dan", 24, top + 35);
+    ctx.fillText("DOP (dopoldan)", colDan + 20, top + 35);
+    ctx.fillText("POP (popoldan)", colDan + colW + 20, top + 35);
+
+    for (var d = 0; d < 7; d++) {
+      var y = top + headH + d * rowH;
+      ctx.fillStyle = d % 2 ? "#f3e6cf" : "#faf3e2";
+      ctx.fillRect(0, y, W, rowH);
+      ctx.fillStyle = "#e8d6b3";
+      ctx.fillRect(0, y, colDan, rowH);
+      ctx.fillStyle = "#2b1a13";
+      ctx.font = "700 16px Manrope, sans-serif";
+      ctx.fillText(DAYS[d], 24, y + 27);
+      ctx.font = "400 13px Manrope, sans-serif";
+      ctx.fillText(fmt(viewWeek, d), 24, y + 47);
+      ["DOP", "POP"].forEach(function (s, i) {
+        var uid = finalSlots[slotKey(d, s)] || "";
+        var x = colDan + i * colW + 20;
+        if (uid) {
+          ctx.fillStyle = "#2b1a13";
+          ctx.font = "600 17px Manrope, sans-serif";
+          ctx.fillText(resolveName(uid), x, y + 38);
+        } else {
+          ctx.fillStyle = "#c0231b";
+          ctx.font = "700 16px Manrope, sans-serif";
+          ctx.fillText("—", x, y + 38);
+        }
+      });
+      // mreža
+      ctx.strokeStyle = "rgba(43,26,19,.15)";
+      ctx.strokeRect(0, y, W, rowH);
+      ctx.beginPath();
+      ctx.moveTo(colDan, y); ctx.lineTo(colDan, y + rowH);
+      ctx.moveTo(colDan + colW, y); ctx.lineTo(colDan + colW, y + rowH);
+      ctx.stroke();
+    }
+
+    var a = document.createElement("a");
+    a.download = "urnik-" + iso(viewWeek) + ".png";
+    a.href = cv.toDataURL("image/png");
+    a.click();
+  });
+
+  // ---------- delavke ----------
+  async function loadWorkers() {
+    var snap = await db.collection("workers").get();
+    workersCache = {};
+    var rows = [];
+    snap.docs
+      .map(function (d) { return { uid: d.id, data: d.data() }; })
+      .sort(function (a, b) { return String(a.data.name).localeCompare(String(b.data.name), "sl"); })
+      .forEach(function (w) {
+        workersCache[w.uid] = w.data;
+        var inactive = w.data.active !== true;
+        rows.push(
+          "<tr data-uid='" + w.uid + "'" + (inactive ? " style='opacity:.55;'" : "") + ">" +
+          "<td>" + esc(w.data.name) + (inactive ? " <em style='font-size:12px;'>(neaktivna)</em>" : "") + "</td>" +
+          "<td>" + esc(w.data.username) + "</td>" +
+          "<td>" + (w.data.redna ? "<span class='badge-redna'>REDNA</span>" : "Navadna") + "</td>" +
+          "<td style='text-align:right; white-space:nowrap;'>" +
+            "<button class='btn-staff small secondary' data-act='edit'>Uredi</button> " +
+            (inactive
+              ? "<button class='btn-staff small' data-act='activate'>Aktiviraj</button> "
+              : "") +
+            "<button class='btn-staff small danger' data-act='del'>Odstrani</button>" +
+          "</td></tr>"
+        );
+      });
+    $("workersBody").innerHTML = rows.join("") ||
+      "<tr><td colspan='4' style='color:var(--ink-mute);'>Še ni delavk — dodaj prvo zgoraj.</td></tr>";
+  }
+
+  $("nwAdd").addEventListener("click", async function () {
+    var name = $("nwName").value.trim();
+    var username = $("nwUser").value.trim();
+    var password = $("nwPass").value;
+    var redna = $("nwRedna").value === "1";
+    if (!name || !username || password.length < 6) {
+      showMsg("nwMsg", false, "Vnesi ime, uporabniško ime in geslo (vsaj 6 znakov).");
+      return;
+    }
+    var email = musUsernameToEmail(username);
+    if (!email || email === ADMIN_EMAIL) {
+      showMsg("nwMsg", false, "To uporabniško ime ni dovoljeno.");
+      return;
+    }
+    $("nwAdd").disabled = true;
+    try {
+      // pomožna Firebase instanca, da ustvarjanje računa ne odjavi admina
+      var secondary = firebase.apps.find(function (a) { return a.name === "secondary"; }) ||
+                      firebase.initializeApp(firebaseConfig, "secondary");
+      var cred = await secondary.auth().createUserWithEmailAndPassword(email, password);
+      var uid = cred.user.uid;
+      await secondary.auth().signOut();
+      await db.collection("workers").doc(uid).set({
+        name: name,
+        username: username.toLowerCase(),
+        redna: redna,
+        active: true,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      $("nwName").value = $("nwUser").value = $("nwPass").value = "";
+      $("nwRedna").value = "0";
+      showMsg("nwMsg", true, "Delavka dodana.");
+      loadWorkers();
+    } catch (ex) {
+      showMsg("nwMsg", false,
+        ex.code === "auth/email-already-in-use"
+          ? "Uporabniško ime je že zasedeno. (Če si delavko prej odstranil, izbriši njen račun še v Firebase konzoli → Authentication.)"
+          : ex.code === "auth/weak-password"
+            ? "Geslo mora imeti vsaj 6 znakov."
+            : (ex.message || "Napaka."));
+    }
+    $("nwAdd").disabled = false;
+  });
+
+  $("workersBody").addEventListener("click", async function (e) {
+    var btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    var tr = btn.closest("tr");
+    var uid = tr.dataset.uid;
+    var w = workersCache[uid];
+    if (!w) return;
+
+    try {
+      if (btn.dataset.act === "del") {
+        if (!confirm("Res odstranim delavko »" + w.name + "«? Ne bo se več mogla prijaviti.")) return;
+        await db.collection("workers").doc(uid).delete();
+        showMsg("wMsg", true, "Delavka odstranjena. (Za popolno brisanje izbriši račun še v Firebase konzoli → Authentication.)");
+        await loadWorkers();
+        loadSchedule();
+      }
+      if (btn.dataset.act === "activate") {
+        await db.collection("workers").doc(uid).update({ active: true });
+        showMsg("wMsg", true, "Delavka aktivirana.");
+        await loadWorkers();
+      }
+      if (btn.dataset.act === "edit") {
+        var newName = prompt("Ime in priimek:", w.name);
+        if (newName === null) return;
+        newName = newName.trim();
+        if (!newName) { showMsg("wMsg", false, "Ime ne sme biti prazno."); return; }
+        var redna = confirm("Ali je »" + newName + "« REDNA delavka (min. 5 izmen na teden)?\n\nV redu = DA, Prekliči = NE");
+        await db.collection("workers").doc(uid).update({ name: newName, redna: redna });
+        showMsg("wMsg", true, "Delavka posodobljena. (Geslo lahko zamenjaš tako, da delavko odstraniš, izbrišeš račun v Firebase konzoli in jo dodaš znova.)");
+        await loadWorkers();
+        loadSchedule();
+      }
+    } catch (ex) {
+      showMsg("wMsg", false, ex.message || "Napaka.");
+    }
+  });
+
+  // ---------- vsebina (CMS) ----------
+  var cmsValues = {};
+  var cmsChanged = {};
+
+  async function loadCms() {
+    cmsValues = Object.assign({}, CMS_DEFAULTS);
+    var snap = await db.collection("content").get();
+    snap.docs.forEach(function (d) {
+      var v = d.data().value;
+      if (typeof v === "string" && v) cmsValues[d.id] = v;
+    });
+
+    var form = $("cmsForm");
+    form.innerHTML = "";
+    CMS_SCHEMA.forEach(function (section) {
+      var det = document.createElement("details");
+      det.className = "cms-section";
+      var sum = document.createElement("summary");
+      sum.textContent = section.section;
+      det.appendChild(sum);
+
+      section.fields.forEach(function (f) {
+        var wrap = document.createElement("div");
+        wrap.className = "field";
+        var label = document.createElement("label");
+        label.textContent = f.label;
+        wrap.appendChild(label);
+        var val = cmsValues[f.key] || "";
+
+        if (f.type === "image" || f.type === "pdf") {
+          var row = document.createElement("div");
+          row.className = "cms-field-img";
+          if (f.type === "image") {
+            var img = document.createElement("img");
+            img.src = val;
+            img.dataset.previewFor = f.key;
+            row.appendChild(img);
+          } else {
+            var span = document.createElement("span");
+            span.style.fontSize = "13px";
+            span.textContent = val.indexOf("data:") === 0 ? "PDF je naložen v bazo." : "Trenutna datoteka: " + val;
+            span.dataset.previewFor = f.key;
+            row.appendChild(span);
+          }
+          var input = document.createElement("input");
+          input.type = "file";
+          input.accept = f.type === "pdf" ? "application/pdf" : "image/*";
+          input.addEventListener("change", function () { handleFile(input, f.key, f.type); });
+          row.appendChild(input);
+          wrap.appendChild(row);
+        } else {
+          var inp = document.createElement(f.type === "textarea" ? "textarea" : "input");
+          if (f.type !== "textarea") inp.type = "text";
+          inp.value = val;
+          inp.addEventListener("input", function () { cmsChanged[f.key] = inp.value; });
+          wrap.appendChild(inp);
+        }
+        det.appendChild(wrap);
+      });
+      form.appendChild(det);
+    });
+  }
+
+  // sliko pomanjša in stisne, da gre v Firestore (max ~1 MB na dokument)
+  var MAX_B64 = 700000;
+  function compressImage(file, cb, errCb) {
+    var img = new Image();
+    img.onload = function () {
+      URL.revokeObjectURL(img.src);
+      var maxSide = 1600;
+      for (var attempt = 0; attempt < 4; attempt++) {
+        var w = img.width, h = img.height;
+        if (Math.max(w, h) > maxSide) {
+          var k = maxSide / Math.max(w, h);
+          w = Math.round(w * k); h = Math.round(h * k);
+        }
+        var cv = document.createElement("canvas");
+        cv.width = w; cv.height = h;
+        cv.getContext("2d").drawImage(img, 0, 0, w, h);
+        var q = 0.85, out = cv.toDataURL("image/jpeg", q);
+        while (out.length > MAX_B64 && q > 0.45) {
+          q -= 0.1;
+          out = cv.toDataURL("image/jpeg", q);
+        }
+        if (out.length <= MAX_B64) { cb(out); return; }
+        maxSide = Math.round(maxSide * 0.7); // še vedno prevelika -> pomanjšaj dimenzije
+      }
+      errCb(new Error("Slike ni bilo mogoče dovolj stisniti."));
+    };
+    img.onerror = function () { errCb(new Error("Datoteke ni mogoče prebrati kot sliko.")); };
+    img.src = URL.createObjectURL(file);
+  }
+
+  function handleFile(input, key, type) {
+    var file = input.files[0];
+    if (!file) return;
+
+    function done(dataUrl) {
+      cmsChanged[key] = dataUrl;
+      var prev = document.querySelector("[data-preview-for='" + key + "']");
+      if (prev) {
+        if (type === "image") prev.src = dataUrl;
+        else prev.textContent = "Nov PDF pripravljen (klikni Shrani!)";
+      }
+      showMsg("cmsMsg", true, "Datoteka pripravljena — ne pozabi klikniti »Shrani vse spremembe«.");
+    }
+
+    if (type === "image") {
+      compressImage(file, done, function (ex) { showMsg("cmsMsg", false, ex.message); });
+    } else {
+      if (file.size > 520000) {
+        showMsg("cmsMsg", false, "PDF je prevelik (max ~0,5 MB). Pomanjšaj ga npr. na ilovepdf.com (Compress PDF) in poskusi znova.");
+        input.value = "";
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function () { done(reader.result); };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  $("cmsSave").addEventListener("click", async function () {
+    var keys = Object.keys(cmsChanged);
+    if (!keys.length) { showMsg("cmsMsg", false, "Ni sprememb za shraniti."); return; }
+    $("cmsSave").disabled = true;
+    try {
+      var batch = db.batch();
+      keys.forEach(function (k) {
+        batch.set(db.collection("content").doc(k), {
+          value: cmsChanged[k],
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      });
+      await batch.commit();
+      showMsg("cmsMsg", true, "Shranjeno (" + keys.length + " sprememb). Osveži glavno stran, da jih vidiš.");
+      keys.forEach(function (k) { cmsValues[k] = cmsChanged[k]; delete cmsChanged[k]; });
+    } catch (ex) {
+      showMsg("cmsMsg", false, ex.message || "Napaka pri shranjevanju.");
+    }
+    $("cmsSave").disabled = false;
+  });
+
+  // ---------- nastavitve ----------
+  async function loadWindow() {
+    var mode = "auto";
+    try {
+      var cfg = await db.collection("config").doc("settings").get();
+      if (cfg.exists && cfg.data().windowMode) mode = cfg.data().windowMode;
+    } catch (e) {}
+    $("winMode").value = mode;
+    var dow = new Date().getDay();
+    var open = mode === "open" || (mode === "auto" && (dow === 6 || dow === 0));
+    $("wkWindowState").textContent = open ? "· Prijave so trenutno ODPRTE" : "· Prijave so trenutno zaprte";
+  }
+
+  $("winSave").addEventListener("click", async function () {
+    try {
+      await db.collection("config").doc("settings").set({ windowMode: $("winMode").value });
+      showMsg("winMsg", true, "Shranjeno.");
+      loadWindow();
+    } catch (ex) { showMsg("winMsg", false, ex.message || "Napaka."); }
+  });
+
+  $("pwSave").addEventListener("click", async function () {
+    var cur = $("pwCur").value, next = $("pwNew").value;
+    if (next.length < 6) { showMsg("pwMsg", false, "Novo geslo mora imeti vsaj 6 znakov."); return; }
+    try {
+      var user = auth.currentUser;
+      var cred = firebase.auth.EmailAuthProvider.credential(ADMIN_EMAIL, cur);
+      await user.reauthenticateWithCredential(cred);
+      await user.updatePassword(next);
+      $("pwCur").value = $("pwNew").value = "";
+      showMsg("pwMsg", true, "Geslo zamenjano.");
+    } catch (ex) {
+      showMsg("pwMsg", false,
+        (ex.code === "auth/invalid-credential" || ex.code === "auth/wrong-password")
+          ? "Trenutno geslo ni pravilno."
+          : (ex.message || "Napaka."));
+    }
+  });
+
+  $("logoutLink").addEventListener("click", async function (e) {
+    e.preventDefault();
+    await auth.signOut();
+    try { localStorage.removeItem("mus_role"); } catch (ex) {}
+    location.href = "index.html";
+  });
+
+  // ---------- start ----------
+  var unsub = auth.onAuthStateChanged(function (user) {
+    unsub();
+    if (!user) { location.href = "prijava.html"; return; }
+    if (user.email !== ADMIN_EMAIL) { location.href = "zaposleni.html"; return; }
+    loadWorkers()
+      .then(function () { return Promise.all([loadSchedule().then(loadFinal), loadCms(), loadWindow()]); })
+      .catch(function (ex) { alert("Napaka pri nalaganju: " + (ex.message || ex)); });
+  });
+})();
+</script>
+</body>
+</html>

@@ -39,31 +39,36 @@
     if (days[idx]) days[idx].classList.add("today");
   }
 
-  // open status
-  const openEl = document.querySelector(".now-open");
-  if (openEl) {
+  // open status — ure prebere iz prikazanega seznama (.hours-list), da veljajo
+  // tudi spremembe, ki jih admin naredi v nadzorni plošči
+  function updateOpenStatus() {
+    const openEl = document.querySelector(".now-open");
+    const times = document.querySelectorAll(".hours-list li .time");
+    if (!openEl || times.length < 7) return;
+    const parse = (txt) => {
+      const m = String(txt).match(/(\d{1,2})[:.](\d{2})\s*[–\-—]\s*(\d{1,2})[:.](\d{2})/);
+      if (!m) return null;
+      const start = Number(m[1]) + Number(m[2]) / 60;
+      let end = Number(m[3]) + Number(m[4]) / 60;
+      if (end <= start) end = 24; // "do 00:00" pomeni do polnoči
+      return [start, end, m[3].padStart(2, "0") + ":" + m[4]];
+    };
     const now = new Date();
     const h = now.getHours() + now.getMinutes() / 60;
     const jsDay = now.getDay();
-    const hours = [
-      [7, 23], // pon
-      [7, 23], // tor
-      [7, 23], // sre
-      [7, 23], // cet
-      [7, 24], // pet (do 00:00)
-      [8, 24], // sob (do 00:00)
-      [8, 22], // ned
-    ];
     const idx = jsDay === 0 ? 6 : jsDay - 1;
-    const [o, c] = hours[idx];
+    const parsed = parse(times[idx].textContent);
+    if (!parsed) return;
+    const [o, c, closeLabel] = parsed;
     const open = h >= o && h < c;
     openEl.textContent = "";
+    openEl.style.background = "";
+    openEl.style.color = "";
     const dot = document.createElement("span");
     dot.className = "dot";
     const label = document.createElement("span");
     if (open) {
-      const closeHour = c === 24 ? "00:00" : `${c}:00`;
-      label.textContent = `Trenutno odprto · do ${closeHour}`;
+      label.textContent = `Trenutno odprto · do ${closeLabel}`;
     } else {
       openEl.style.background = "rgba(192,35,27,.08)";
       openEl.style.color = "#a01910";
@@ -73,6 +78,8 @@
     openEl.appendChild(dot);
     openEl.appendChild(label);
   }
+  updateOpenStatus();
+  document.addEventListener("cms:loaded", updateOpenStatus);
 
   // hero parallax
   const heroLogo = document.querySelector(".hero-logo");

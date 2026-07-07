@@ -1,0 +1,101 @@
+// Caffe Mušketir — seznam vsebine, ki jo admin lahko ureja,
+// in privzete vrednosti (enake kot v index.html).
+// Uporablja admin.html.
+
+var CMS_SCHEMA = [
+  {
+    section: "Aktualno",
+    fields: [{ key: "aktualno.image", label: "Slika (plakat Aktualno)", type: "image" }],
+  },
+  {
+    section: "Cenik",
+    fields: [
+      { key: "cenik.lead", label: "Uvodni tekst", type: "textarea" },
+      { key: "cenik.text", label: "Dodatni tekst", type: "textarea" },
+      { key: "cenik.image", label: "Slika predogleda cenika", type: "image" },
+      { key: "cenik.pdf", label: "Cenik (PDF datoteka, do ~0,5 MB)", type: "pdf" },
+    ],
+  },
+  {
+    section: "Novosti",
+    fields: [
+      { key: "novosti.intro", label: "Uvodni tekst", type: "textarea" },
+      { key: "novosti.card1.image", label: "1. izdelek — slika", type: "image" },
+      { key: "novosti.card1.badge", label: "1. izdelek — značka", type: "text" },
+      { key: "novosti.card1.name", label: "1. izdelek — ime", type: "text" },
+      { key: "novosti.card1.desc", label: "1. izdelek — opis", type: "textarea" },
+      { key: "novosti.card2.image", label: "2. izdelek — slika", type: "image" },
+      { key: "novosti.card2.badge", label: "2. izdelek — značka", type: "text" },
+      { key: "novosti.card2.name", label: "2. izdelek — ime (1. vrstica)", type: "text" },
+      { key: "novosti.card2.name2", label: "2. izdelek — ime (2. vrstica)", type: "text" },
+      { key: "novosti.card2.desc", label: "2. izdelek — opis", type: "textarea" },
+    ],
+  },
+  {
+    section: "Lokal",
+    fields: [
+      { key: "lokal.text", label: "Uvodni tekst", type: "textarea" },
+      { key: "lokal.img1", label: "Slika 1 (velika levo)", type: "image" },
+      { key: "lokal.img2", label: "Slika 2", type: "image" },
+      { key: "lokal.img3", label: "Slika 3", type: "image" },
+      { key: "lokal.img4", label: "Slika 4", type: "image" },
+      { key: "lokal.img5", label: "Slika 5", type: "image" },
+    ],
+  },
+  {
+    section: "Prostor zadaj",
+    fields: [
+      { key: "zadaj.lead", label: "Uvodni tekst", type: "textarea" },
+      { key: "zadaj.img1", label: "Slika 1 (velika)", type: "image" },
+      { key: "zadaj.img2", label: "Slika 2", type: "image" },
+      { key: "zadaj.img3", label: "Slika 3", type: "image" },
+    ],
+  },
+  {
+    section: "Delovni čas",
+    fields: [
+      { key: "hours.pon", label: "Ponedeljek", type: "text" },
+      { key: "hours.tor", label: "Torek", type: "text" },
+      { key: "hours.sre", label: "Sreda", type: "text" },
+      { key: "hours.cet", label: "Četrtek", type: "text" },
+      { key: "hours.pet", label: "Petek", type: "text" },
+      { key: "hours.sob", label: "Sobota", type: "text" },
+      { key: "hours.ned", label: "Nedelja & prazniki", type: "text" },
+    ],
+  },
+];
+
+var CMS_DEFAULTS = {
+  "aktualno.image": "assets/aktualno.PNG",
+  "cenik.lead": "Klikni sliko na levi in se ti odpre celoten cenik v PDF obliki — kave, ledene kave, hladne pijače, sokovi in več.",
+  "cenik.text": "V ponudbi imamo tudi tople sendviče in sladoledne lučke. Imate željo, ki je ni v ceniku? Vprašajte natakarja — vedno se da kaj iznajti.",
+  "cenik.image": "assets/cenik-predogled.png",
+  "cenik.pdf": "menu.pdf",
+  "novosti.intro": "Novosti, ki so se ravnokar pridružile naši ponudbi.",
+  "novosti.card1.image": "assets/novost1.jpeg",
+  "novosti.card1.badge": "Novo",
+  "novosti.card1.name": "ORANGINA",
+  "novosti.card1.desc": "Okusi orangino z originalnim ali rogue okusom.",
+  "novosti.card2.image": "assets/novost2.JPEG",
+  "novosti.card2.badge": "NOVO",
+  "novosti.card2.name": "SCHWEPPES Poper&Cherry",
+  "novosti.card2.name2": "FANTA Lemon",
+  "novosti.card2.desc": "Probaj nova okusa Schweppesa in Fante",
+  "lokal.text": "Topla lesena oprema, mehka svetloba, kotički za samoto in mize za druženje. Spredaj kava, zadaj pa še veliko več.",
+  "lokal.img1": "assets/lokal/IMG_9676.JPEG",
+  "lokal.img2": "assets/lokal/IMG_9675.JPEG",
+  "lokal.img3": "assets/lokal/IMG_9685.JPEG",
+  "lokal.img4": "assets/lokal/IMG_9679.JPEG",
+  "lokal.img5": "assets/lokal/IMG_9674.JPEG",
+  "zadaj.lead": "Velik zadnji prostor s pravim klubskim duhom — biljard, pikado in udobni kavči za večere, ki se zavlečejo do polnoči.",
+  "zadaj.img1": "assets/lokal/IMG_9656.JPEG",
+  "zadaj.img2": "assets/lokal/IMG_9672.JPEG",
+  "zadaj.img3": "assets/lokal/IMG_9672.JPEG",
+  "hours.pon": "07:00 – 23:00",
+  "hours.tor": "07:00 – 23:00",
+  "hours.sre": "07:00 – 23:00",
+  "hours.cet": "07:00 – 23:00",
+  "hours.pet": "07:00 – 00:00",
+  "hours.sob": "08:00 – 00:00",
+  "hours.ned": "08:00 – 22:00",
+};

@@ -1,0 +1,87 @@
+rules_version = '2';
+
+// Caffe Mušketir — varnostna pravila za Firestore.
+// Prilepi CELO vsebino te datoteke v:
+// Firebase console → Firestore Database → Rules → (prilepi) → Publish
+//
+// Če si v firebase-config.js spremenil ADMIN_EMAIL, ga spremeni tudi tukaj!
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email == 'caffemusketir@gmail.com';
+    }
+
+    function workerPath() {
+      return /databases/$(database)/documents/workers/$(request.auth.uid);
+    }
+
+    function isActiveWorker() {
+      return isSignedIn() && exists(workerPath()) && get(workerPath()).data.active == true;
+    }
+
+    function isRedna() {
+      return get(workerPath()).data.redna == true;
+    }
+
+    function windowMode() {
+      return exists(/databases/$(database)/documents/config/settings)
+        ? get(/databases/$(database)/documents/config/settings).data.windowMode
+        : 'auto';
+    }
+
+    // Prijave odprte: ročno "open", ali samodejno konec tedna.
+    // (dayOfWeek: 1=pon ... 7=ned; >=5 zajame pet zvečer po UTC zaradi časovne cone)
+    function signupOpen() {
+      return windowMode() == 'open'
+        || (windowMode() == 'auto' && request.time.dayOfWeek() >= 5);
+    }
+
+    // Vsebina strani — javno berljiva (glavna stran jo prikazuje vsem)
+    match /content/{key} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Nastavitve (način odpiranja prijav)
+    match /config/settings {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Delavke — admin vse; delavka lahko bere samo svoj zapis
+    match /workers/{uid} {
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == uid);
+      allow write: if isAdmin();
+    }
+
+    // Pravi urnik (osnutek + potrjeni) — vidi in ureja samo admin
+    match /schedules/{week} {
+      allow read, write: if isAdmin();
+    }
+
+    // Potrjeni urnik posamezne delavke — vsaka vidi samo svojega
+    match /myschedule/{docId} {
+      allow read: if isAdmin() || (isSignedIn() && (resource == null || resource.data.uid == request.auth.uid));
+      allow write: if isAdmin();
+    }
+
+    // Želje delavk (prijave na izmene)
+    match /signups/{signupId} {
+      // resource == null: dokument še ne obstaja (prvi obisk delavke)
+      allow read: if isAdmin() || (isSignedIn() && (resource == null || resource.data.uid == request.auth.uid));
+      allow create, update: if isActiveWorker()
+        && request.resource.data.uid == request.auth.uid
+        && signupId == request.resource.data.week + '_' + request.auth.uid
+        && request.resource.data.picks.size() <= 14
+        && signupOpen()
+        && (!isRedna() || request.resource.data.picks.size() >= 5);
+      allow delete: if isAdmin();
+    }
+  }
+}

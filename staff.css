@@ -1,0 +1,175 @@
+/* Caffe Mušketir — strani za zaposlene in admin */
+
+/* staff strani nimajo burger menija — povezave (Nazaj, Odjava) so vedno vidne */
+@media (max-width: 860px) {
+  .nav-links { display: flex !important; gap: 16px; }
+  .nav-links a { font-size: 13px; }
+}
+
+.staff-main { max-width: 1100px; margin: 0 auto; padding: 48px 20px 100px; position: relative; z-index: 1; }
+.staff-main.narrow { max-width: 480px; }
+
+.staff-card {
+  background: var(--cream-light);
+  border: 1px solid rgba(43,26,19,.1);
+  border-radius: 18px;
+  box-shadow: var(--shadow-1);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.staff-card h2 { font-size: clamp(26px, 4vw, 36px); }
+
+/* obrazci */
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 13px; font-weight: 700; letter-spacing: .04em; margin-bottom: 6px; color: var(--ink); }
+.field input[type="text"], .field input[type="password"], .field textarea, .field select {
+  width: 100%; box-sizing: border-box;
+  padding: 11px 14px;
+  border: 1px solid rgba(43,26,19,.18);
+  border-radius: 10px;
+  background: #fff;
+  font: inherit; font-size: 15px; color: var(--ink);
+}
+.field textarea { min-height: 84px; resize: vertical; }
+.field input:focus, .field textarea:focus { outline: 2px solid var(--red-soft); border-color: var(--red); }
+
+.btn-staff {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--red); color: #fff;
+  border: 0; border-radius: 999px;
+  padding: 12px 26px;
+  font: inherit; font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-staff:hover { background: var(--red-deep); }
+.btn-staff:disabled { opacity: .5; cursor: default; }
+.btn-staff.secondary { background: transparent; color: var(--ink); border: 1px solid rgba(43,26,19,.25); }
+.btn-staff.secondary:hover { background: rgba(43,26,19,.06); }
+.btn-staff.small { padding: 7px 14px; font-size: 13px; }
+.btn-staff.danger { background: #fff; color: var(--red-deep); border: 1px solid var(--red-soft); }
+.btn-staff.danger:hover { background: rgba(230,51,41,.08); }
+
+.msg { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin: 14px 0; display: none; }
+.msg.err { display: block; background: rgba(192,35,27,.1); color: #a01910; }
+.msg.ok  { display: block; background: rgba(46,125,50,.12); color: #256029; }
+.msg.info{ display: block; background: rgba(43,26,19,.07); color: var(--ink-soft); }
+
+/* izbira izmen */
+.shift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin: 20px 0; }
+.shift-day { background: #fff; border: 1px solid rgba(43,26,19,.12); border-radius: 14px; padding: 14px 12px; text-align: center; }
+.shift-day .dname { font-weight: 800; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.shift-day .ddate { font-size: 12px; color: var(--ink-mute); margin-bottom: 12px; }
+.shift-btn {
+  display: block; width: 100%;
+  margin-top: 8px; padding: 10px 0;
+  border: 1.5px solid rgba(43,26,19,.18); border-radius: 10px;
+  background: #fff; color: var(--ink-soft);
+  font: inherit; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .12s;
+}
+.shift-btn:hover { border-color: var(--red); color: var(--red); }
+.shift-btn.on { background: var(--red); border-color: var(--red); color: #fff; }
+.pick-count { font-size: 15px; font-weight: 700; }
+.pick-count .warn { color: var(--red-deep); }
+
+/* admin zavihki */
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+.tab-btn {
+  padding: 10px 22px; border-radius: 999px;
+  border: 1px solid rgba(43,26,19,.2); background: transparent;
+  font: inherit; font-size: 14px; font-weight: 700; color: var(--ink);
+  cursor: pointer;
+}
+.tab-btn.active { background: var(--ink); color: var(--cream-light); border-color: var(--ink); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* urnik — tabela */
+.sched-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-1); }
+.sched-table th, .sched-table td { border: 1px solid rgba(43,26,19,.1); padding: 12px 14px; text-align: left; vertical-align: top; font-size: 14px; }
+.sched-table th { background: var(--ink); color: var(--cream-light); font-weight: 700; letter-spacing: .04em; }
+.sched-table td .who { display: inline-block; background: rgba(230,51,41,.08); border: 1px solid rgba(230,51,41,.2); color: var(--ink); border-radius: 999px; padding: 3px 12px; margin: 2px 3px 2px 0; font-size: 13px; font-weight: 600; }
+.sched-table td .who.redna { background: rgba(43,26,19,.08); border-color: rgba(43,26,19,.25); }
+.sched-table td.empty { color: var(--ink-mute); font-style: italic; }
+.week-nav { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+.week-nav .wk-label { font-weight: 800; font-size: 17px; }
+
+.count-list { margin: 18px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.count-list li { background: #fff; border: 1px solid rgba(43,26,19,.12); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 600; }
+.count-list li.short { border-color: var(--red); color: var(--red-deep); }
+
+/* delavke — tabela */
+.workers-table { width: 100%; border-collapse: collapse; }
+.workers-table th, .workers-table td { padding: 10px 12px; border-bottom: 1px solid rgba(43,26,19,.1); text-align: left; font-size: 14px; }
+.workers-table th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); }
+.badge-redna { display: inline-block; background: var(--red); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .06em; border-radius: 999px; padding: 2px 10px; }
+
+/* CMS */
+.cms-section { margin-bottom: 8px; }
+.cms-section > summary { cursor: pointer; font-family: "Cormorant Garamond", serif; font-size: 24px; font-weight: 700; padding: 14px 0; }
+.cms-field-img { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.cms-field-img img { width: 110px; height: 78px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(43,26,19,.15); background: #fff; }
+
+.staff-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; }
+.staff-top h1 { font-size: clamp(30px, 5vw, 48px); }
+.staff-top .sub { color: var(--ink-soft); margin-top: 4px; }
+
+/* pravi urnik */
+.final-table td { cursor: pointer; transition: background .12s; }
+.final-table td:hover { background: rgba(43,26,19,.05); }
+.final-table td.slot-empty {
+  background: rgba(230,51,41,.09);
+  color: var(--red-deep);
+  font-weight: 700; font-size: 13px;
+  text-align: center;
+}
+.final-table td.slot-empty:hover { background: rgba(230,51,41,.16); }
+.final-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+.final-status { font-size: 13px; font-weight: 700; }
+.final-status.ok { color: #256029; }
+.final-status.draft { color: var(--red-deep); }
+
+/* izbira delavke (okno) */
+.chooser-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(43,26,19,.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.chooser-box {
+  background: var(--cream-light);
+  border-radius: 16px;
+  box-shadow: var(--shadow-2);
+  padding: 22px;
+  width: 100%; max-width: 380px;
+  max-height: 80vh; overflow-y: auto;
+}
+.chooser-box h3 { margin-top: 0; }
+.chooser-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; box-sizing: border-box;
+  padding: 11px 14px; margin-bottom: 8px;
+  border: 1px solid rgba(43,26,19,.15); border-radius: 10px;
+  background: #fff; font: inherit; font-size: 15px; font-weight: 600; color: var(--ink);
+  cursor: pointer; text-align: left;
+}
+.chooser-item:hover { border-color: var(--red); }
+.chooser-item .hint { font-size: 12px; font-weight: 700; color: #256029; }
+.chooser-item.clear { color: var(--red-deep); background: rgba(230,51,41,.06); }
+
+/* tabele na ozkih zaslonih: vodoravno pomikanje namesto širjenja strani */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-scroll .sched-table { min-width: 540px; }
+.table-scroll .workers-table { min-width: 520px; }
+
+@media (max-width: 760px) {
+  .staff-main { padding: 28px 12px 80px; }
+  .staff-card { padding: 18px 14px; }
+  .sched-table th, .sched-table td { padding: 8px; font-size: 12px; }
+  .workers-table th, .workers-table td { padding: 8px 6px; font-size: 13px; }
+  .btn-staff { padding: 10px 18px; font-size: 14px; }
+  .btn-staff.small { padding: 6px 10px; font-size: 12px; }
+  .tab-btn { padding: 8px 14px; font-size: 13px; }
+}

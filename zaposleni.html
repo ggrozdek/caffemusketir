@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8" />
+<title>Zaposleni — Caffe Mušketir</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="staff.css" />
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/favicon.png" alt="" />
+      <span class="nb-name">caffe <span class="accent">mušketir</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Nazaj na stran</a>
+      <a href="#" id="logoutLink" style="color: var(--red); font-weight: 700;">Odjava</a>
+    </nav>
+  </div>
+</header>
+
+<main class="staff-main">
+  <div class="staff-top">
+    <div>
+      <p class="eyebrow">Zaposleni</p>
+      <h1 style="margin:0;">Živjo, <em class="accent" id="wname">…</em></h1>
+      <p class="sub" id="rednaNote" style="display:none;">Si <strong>REDNA</strong> delavka — izbrati moraš vsaj <strong>5 izmen</strong> na teden.</p>
+    </div>
+  </div>
+
+  <!-- želje za naslednji teden -->
+  <div class="staff-card" id="pickCard" style="display:none;">
+    <h2 style="margin-top:0;">Želje za teden <span id="weekLabel" class="accent"></span></h2>
+    <p>Klikni izmene, ki bi jih <strong>želela</strong> delati. <strong>DOP</strong> = dopoldan, <strong>POP</strong> = popoldan. Do konca nedelje lahko izbiro še spreminjaš. Končni urnik sestavi vodja — svoje potrjene izmene boš videla spodaj.</p>
+    <div class="shift-grid" id="grid"></div>
+    <p class="pick-count">Izbranih izmen: <span id="count">0</span> <span id="countWarn" class="warn"></span></p>
+    <div class="msg" id="msg"></div>
+    <button class="btn-staff" id="saveBtn">Shrani želje</button>
+  </div>
+
+  <!-- zaprto -->
+  <div class="staff-card" id="closedCard" style="display:none;">
+    <h2 style="margin-top:0;">Oddaja želja trenutno ni odprta</h2>
+    <p>Želje za naslednji teden se oddajajo <strong>vsako soboto in nedeljo</strong>. Takrat pridi nazaj in izberi svoje izmene.</p>
+  </div>
+
+  <!-- moj potrjeni urnik -->
+  <div class="staff-card" id="currentCard" style="display:none;">
+    <h2 style="margin-top:0;">Moj potrjeni urnik</h2>
+    <div id="currentList"></div>
+  </div>
+</main>
+
+<script>
+(function () {
+  if (!musFirebaseReady()) { location.href = "prijava.html"; return; }
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+  var db = firebase.firestore();
+
+  var DAYS = ["Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota", "Nedelja"];
+  var DAYS_SHORT = ["Pon", "Tor", "Sre", "Čet", "Pet", "Sob", "Ned"];
+  var SHIFTS = ["DOP", "POP"];
+
+  var me = null;       // { uid, name, redna }
+  var weekStart = "";  // teden, za katerega tečejo prijave (naslednji ponedeljek)
+  var picks = new Set();
+
+  // ---- datumi ----
+  function iso(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function mondayOfWeek(d) {
+    var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var day = x.getDay(); // 0=ned
+    x.setDate(x.getDate() + (day === 0 ? -6 : 1 - day));
+    return x;
+  }
+  function nextMonday() {
+    var m = mondayOfWeek(new Date());
+    m.setDate(m.getDate() + 7);
+    return m;
+  }
+  function fmtDate(isoStr, off) {
+    var d = new Date(isoStr + "T00:00:00");
+    d.setDate(d.getDate() + (off || 0));
+    return d.getDate() + "." + (d.getMonth() + 1) + ".";
+  }
+  function weekLabel(isoStr) { return fmtDate(isoStr, 0) + " – " + fmtDate(isoStr, 6); }
+
+  // ---- prikaz ----
+  function renderGrid() {
+    var grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    for (var day = 0; day < 7; day++) {
+      (function (day) {
+        var box = document.createElement("div");
+        box.className = "shift-day";
+        var dn = document.createElement("div");
+        dn.className = "dname"; dn.textContent = DAYS[day];
+        var dd = document.createElement("div");
+        dd.className = "ddate"; dd.textContent = fmtDate(weekStart, day);
+        box.appendChild(dn); box.appendChild(dd);
+        SHIFTS.forEach(function (shift) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "shift-btn";
+          b.textContent = shift;
+          var key = day + ":" + shift;
+          if (picks.has(key)) b.classList.add("on");
+          b.addEventListener("click", function () {
+            if (picks.has(key)) picks.delete(key); else picks.add(key);
+            b.classList.toggle("on");
+            updateCount();
+          });
+          box.appendChild(b);
+        });
+        grid.appendChild(box);
+      })(day);
+    }
+    updateCount();
+  }
+
+  function updateCount() {
+    document.getElementById("count").textContent = picks.size;
+    document.getElementById("countWarn").textContent =
+      (me.redna && picks.size < 5) ? "— kot redna delavka jih potrebuješ vsaj 5!" : "";
+  }
+
+  // prikaz potrjenega urnika (ta teden + naslednji, če je že potrjen)
+  function renderSchedule(curWeek, curPicks, hasCur, nextWeek, nextPicks, hasNext) {
+    var card = document.getElementById("currentCard");
+    var list = document.getElementById("currentList");
+    card.style.display = "block";
+
+    function block(title, week, picks) {
+      var sorted = picks.slice().sort(function (a, b) { return a.day - b.day || (a.shift === "DOP" ? -1 : 1); });
+      return "<p style='margin:14px 0 6px; font-weight:700;'>" + title + " (" + weekLabel(week) + "):</p>" +
+        (sorted.length
+          ? "<ul class='count-list'>" + sorted.map(function (p) {
+              return "<li>" + DAYS_SHORT[p.day] + " " + fmtDate(week, p.day) + " · <strong>" + p.shift + "</strong></li>";
+            }).join("") + "</ul>"
+          : "<p style='margin:0;'>Ta teden nimaš izmen.</p>");
+    }
+
+    var html = "";
+    html += hasCur
+      ? block("Ta teden", curWeek, curPicks)
+      : "<p style='margin:14px 0 6px;'>Za ta teden (" + weekLabel(curWeek) + ") urnik zate ni potrjen.</p>";
+    html += hasNext
+      ? block("Naslednji teden", nextWeek, nextPicks)
+      : "<p style='margin:14px 0 0; color:var(--ink-mute);'>Urnik za naslednji teden še ni potrjen.</p>";
+    list.innerHTML = html;
+  }
+
+  // ---- nalaganje ----
+  async function load(user) {
+    var wdoc = await db.collection("workers").doc(user.uid).get();
+    if (!wdoc.exists || wdoc.data().active !== true) {
+      await auth.signOut();
+      try { localStorage.removeItem("mus_role"); } catch (e) {}
+      location.href = "prijava.html";
+      return;
+    }
+    me = { uid: user.uid, name: wdoc.data().name, redna: wdoc.data().redna === true };
+    document.getElementById("wname").textContent = me.name;
+    if (me.redna) document.getElementById("rednaNote").style.display = "block";
+
+    // ali so prijave odprte? (ročni način iz nastavitev + samodejno sob/ned)
+    var mode = "auto";
+    try {
+      var cfg = await db.collection("config").doc("settings").get();
+      if (cfg.exists && cfg.data().windowMode) mode = cfg.data().windowMode;
+    } catch (e) {}
+    var dow = new Date().getDay(); // 0=ned, 6=sob
+    var open = mode === "open" || (mode === "auto" && (dow === 6 || dow === 0));
+
+    weekStart = iso(nextMonday());
+    var curWeek = iso(mondayOfWeek(new Date()));
+
+    var refs = await Promise.all([
+      db.collection("signups").doc(weekStart + "_" + me.uid).get(),
+      db.collection("myschedule").doc(curWeek + "_" + me.uid).get(),
+      db.collection("myschedule").doc(weekStart + "_" + me.uid).get(),
+    ]);
+    picks = new Set((refs[0].exists ? refs[0].data().picks || [] : []).map(function (p) { return p.day + ":" + p.shift; }));
+
+    if (open) {
+      document.getElementById("pickCard").style.display = "block";
+      document.getElementById("weekLabel").textContent = weekLabel(weekStart);
+      renderGrid();
+    } else {
+      document.getElementById("closedCard").style.display = "block";
+    }
+    renderSchedule(
+      curWeek, refs[1].exists ? refs[1].data().picks || [] : [], refs[1].exists,
+      weekStart, refs[2].exists ? refs[2].data().picks || [] : [], refs[2].exists
+    );
+  }
+
+  // ---- shranjevanje ----
+  document.getElementById("saveBtn").addEventListener("click", async function () {
+    var msg = document.getElementById("msg");
+    msg.className = "msg"; msg.style.display = "none";
+    var list = Array.from(picks).map(function (k) {
+      var parts = k.split(":");
+      return { day: Number(parts[0]), shift: parts[1] };
+    });
+    try {
+      if (me.redna && list.length < 5) {
+        throw new Error("Kot redna delavka moraš izbrati vsaj 5 izmen (izbranih: " + list.length + ").");
+      }
+      await db.collection("signups").doc(weekStart + "_" + me.uid).set({
+        week: weekStart,
+        uid: me.uid,
+        name: me.name,
+        redna: me.redna,
+        picks: list,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      msg.className = "msg ok";
+      msg.textContent = "Želje shranjene! Izbranih izmen: " + list.length + ". Končni urnik potrdi vodja.";
+    } catch (ex) {
+      msg.className = "msg err";
+      msg.textContent = (ex && ex.code === "permission-denied")
+        ? "Shranjevanje ni dovoljeno — oddaja želja je verjetno zaprta."
+        : (ex.message || "Napaka pri shranjevanju.");
+    }
+    msg.style.display = "block";
+  });
+
+  document.getElementById("logoutLink").addEventListener("click", async function (e) {
+    e.preventDefault();
+    await auth.signOut();
+    try { localStorage.removeItem("mus_role"); } catch (ex) {}
+    location.href = "index.html";
+  });
+
+  var unsub = auth.onAuthStateChanged(function (user) {
+    unsub();
+    if (!user) { location.href = "prijava.html"; return; }
+    if (user.email === ADMIN_EMAIL) { location.href = "admin.html"; return; }
+    load(user).catch(function () { location.href = "prijava.html"; });
+  });
+})();
+</script>
+</body>
+</html>
