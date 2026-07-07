@@ -1,0 +1,12 @@
+# lokalna baza stare Node verzije (gesla, urniki) — NIKOLI na GitHub
+data/
+
+# stara Node verzija strežnika ni potrebna na spletu
+server.js
+
+# sistemske / delovne mape
+.claude/
+node_modules/
+Thumbs.db
+.DS_Store
+*.tmp
